@@ -222,7 +222,7 @@ function ForWho() {
       role: "Per chi offre",
       title: "Ristoratori & negozi",
       description:
-        "Riduci lo spreco, aumenta la visibilità e contribuisci al tuo territorio. Un gesto concreto, senza costi.",
+        "Riduci lo spreco, aumenta la visibilità e contribuisci al tuo territorio. Un gesto concreto, senza costi. Una volta consegnato il cibo, il ristorante non è più responsabile.",
       cta: "Registra la tua attività",
       color: "terracotta",
     },
@@ -377,14 +377,9 @@ function Footer() {
             <h4 className="mb-4 text-sm font-semibold uppercase tracking-wider text-foreground">
               Contatti
             </h4>
-            <ul className="space-y-2">
-              <li className="text-sm text-muted-foreground">
-                ciao@salvapasti.it
-              </li>
-              <li className="text-sm text-muted-foreground">
-                Via Roma 1, Milano
-              </li>
-            </ul>
+            <p className="text-sm text-muted-foreground">
+              Informazioni in arrivo.
+            </p>
           </div>
         </div>
         <div className="mt-12 border-t border-border pt-8 text-center">
