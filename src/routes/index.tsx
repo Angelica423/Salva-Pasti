@@ -2,7 +2,6 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import heroFood from "../assets/hero-food.jpg";
-import { UtensilsCrossed, Users, Handshake, ShieldCheck } from "lucide-react";
 
 export const Route = createFileRoute("/")({
   component: Index,
