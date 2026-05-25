@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import heroFood from "../assets/hero-food.jpg";
+import { LiveMap } from "@/components/live-map";
 
 export const Route = createFileRoute("/")({
   component: Index,
