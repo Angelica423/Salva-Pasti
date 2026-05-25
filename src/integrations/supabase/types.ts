@@ -14,7 +14,86 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      food_boxes: {
+        Row: {
+          address: string
+          created_at: string
+          description: string
+          id: string
+          lat: number
+          lng: number
+          pickup_from: string
+          pickup_to: string
+          portions: number
+          restaurant_name: string
+          status: string
+        }
+        Insert: {
+          address: string
+          created_at?: string
+          description: string
+          id?: string
+          lat: number
+          lng: number
+          pickup_from: string
+          pickup_to: string
+          portions?: number
+          restaurant_name: string
+          status?: string
+        }
+        Update: {
+          address?: string
+          created_at?: string
+          description?: string
+          id?: string
+          lat?: number
+          lng?: number
+          pickup_from?: string
+          pickup_to?: string
+          portions?: number
+          restaurant_name?: string
+          status?: string
+        }
+        Relationships: []
+      }
+      reservations: {
+        Row: {
+          created_at: string
+          food_box_id: string
+          id: string
+          reserver_email: string
+          reserver_name: string
+          reserver_role: string
+          status: string
+        }
+        Insert: {
+          created_at?: string
+          food_box_id: string
+          id?: string
+          reserver_email: string
+          reserver_name: string
+          reserver_role: string
+          status?: string
+        }
+        Update: {
+          created_at?: string
+          food_box_id?: string
+          id?: string
+          reserver_email?: string
+          reserver_name?: string
+          reserver_role?: string
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reservations_food_box_id_fkey"
+            columns: ["food_box_id"]
+            isOneToOne: false
+            referencedRelation: "food_boxes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
