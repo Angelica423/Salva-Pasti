@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import heroFood from "../assets/hero-food.jpg";
+import { LiveMap } from "@/components/live-map";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -304,86 +305,7 @@ function ForReceivers() {
   );
 }
 
-function LiveMap() {
-  // Simulated map pins
-  const pins = [
-    { top: "30%", left: "25%", label: "Trattoria Bella", delay: 0 },
-    { top: "55%", left: "60%", label: "Pasticceria Sole", delay: 0.4 },
-    { top: "70%", left: "35%", label: "Sala Eventi Roma", delay: 0.8 },
-    { top: "40%", left: "75%", label: "Forno Centrale", delay: 1.2 },
-    { top: "20%", left: "55%", label: "Ristorante Mare", delay: 1.6 },
-  ];
-
-  return (
-    <section id="mappa" className="bg-background py-24">
-      <div className="mx-auto max-w-6xl px-6">
-        <AnimatedSection className="mb-12 text-center">
-          <p className="mb-3 text-sm font-medium uppercase tracking-widest text-muted-foreground">In tempo reale</p>
-          <h2 className="text-balance text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
-            La <em className="font-serif italic text-terracotta">mappa</em> del cibo salvato.
-          </h2>
-          <p className="mx-auto mt-5 max-w-2xl text-lg text-muted-foreground">
-            Box di cibo disponibili nel tuo quartiere, aggiornate al secondo. Prenota direttamente dall'app.
-          </p>
-        </AnimatedSection>
-        <AnimatedSection>
-          <div className="relative aspect-[16/9] w-full overflow-hidden rounded-2xl border border-border shadow-lg">
-            <div
-              className="absolute inset-0"
-              style={{
-                backgroundImage:
-                  "linear-gradient(135deg, oklch(0.94 0.02 80) 0%, oklch(0.88 0.03 110) 50%, oklch(0.92 0.02 90) 100%)",
-              }}
-            />
-            {/* Grid lines */}
-            <svg className="absolute inset-0 h-full w-full opacity-20" xmlns="http://www.w3.org/2000/svg">
-              <defs>
-                <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-                  <path d="M 40 0 L 0 0 0 40" fill="none" stroke="currentColor" strokeWidth="0.5" />
-                </pattern>
-              </defs>
-              <rect width="100%" height="100%" fill="url(#grid)" className="text-foreground" />
-            </svg>
-            {/* Animated pins */}
-            {pins.map((p, i) => (
-              <motion.div
-                key={i}
-                className="absolute -translate-x-1/2 -translate-y-full"
-                style={{ top: p.top, left: p.left }}
-                initial={{ opacity: 0, scale: 0 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: p.delay, duration: 0.5, ease: "backOut" }}
-              >
-                <div className="relative">
-                  <motion.div
-                    className="absolute -inset-2 rounded-full"
-                    style={{ backgroundColor: "var(--terracotta)", opacity: 0.3 }}
-                    animate={{ scale: [1, 1.8, 1], opacity: [0.4, 0, 0.4] }}
-                    transition={{ duration: 2, repeat: Infinity, delay: p.delay }}
-                  />
-                  <div
-                    className="relative flex h-8 w-8 items-center justify-center rounded-full text-white shadow-lg"
-                    style={{ backgroundColor: "var(--terracotta)" }}
-                  >
-                    🍽
-                  </div>
-                  <div className="absolute left-1/2 top-full mt-1 -translate-x-1/2 whitespace-nowrap rounded-md bg-foreground px-2 py-1 text-[10px] font-medium text-background shadow">
-                    {p.label}
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-            {/* Legend */}
-            <div className="absolute bottom-4 left-4 rounded-lg bg-background/90 px-3 py-2 text-xs font-medium text-foreground backdrop-blur-sm">
-              <span className="mr-2 inline-block h-2 w-2 animate-pulse rounded-full" style={{ backgroundColor: "var(--terracotta)" }} />
-              5 box attive · aggiornato ora
-            </div>
-          </div>
-        </AnimatedSection>
-      </div>
-    </section>
-  );
-}
+// LiveMap moved to src/components/live-map.tsx
 
 function FAQ() {
   const faqs = [
