@@ -58,9 +58,9 @@ function Navbar() {
           <a href="#faq" className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">
             FAQ
           </a>
-          <button className="inline-flex items-center justify-center rounded-full bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground transition-all hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/20">
+          <Link to="/registrati" className="inline-flex items-center justify-center rounded-full bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground transition-all hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/20">
             Unisciti a noi
-          </button>
+          </Link>
         </div>
       </div>
     </nav>
@@ -94,9 +94,9 @@ function Hero() {
             <a href="#come-funziona" className="inline-flex items-center justify-center rounded-full bg-primary px-8 py-3.5 text-base font-semibold text-primary-foreground transition-all hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/20">
               Scopri il progetto
             </a>
-            <a href="#per-chi" className="inline-flex items-center justify-center rounded-full border border-white/25 bg-white/10 px-8 py-3.5 text-base font-medium text-white backdrop-blur-sm transition-all hover:bg-white/20">
+            <Link to="/registrati" className="inline-flex items-center justify-center rounded-full border border-white/25 bg-white/10 px-8 py-3.5 text-base font-medium text-white backdrop-blur-sm transition-all hover:bg-white/20">
               Unisciti a noi
-            </a>
+            </Link>
           </div>
         </motion.div>
       </div>
