@@ -43,22 +43,22 @@ function Navbar() {
             Salva Pasti
           </span>
         </Link>
-        <div className="hidden items-center gap-8 md:flex">
-          <a href="#storia" className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">
-            La storia
-          </a>
+        <div className="hidden items-center gap-6 md:flex">
           <a href="#come-funziona" className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">
             Come funziona
-          </a>
-          <a href="#per-chi" className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">
-            Per chi è
           </a>
           <a href="#mappa" className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">
             Mappa
           </a>
-          <a href="#faq" className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">
-            FAQ
-          </a>
+          <Link to="/associazioni" className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">
+            Associazioni
+          </Link>
+          <Link to="/box-sospesa" className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">
+            Box sospesa
+          </Link>
+          <Link to="/mie-prenotazioni" className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">
+            Le mie prenotazioni
+          </Link>
           <Link to="/registrati" className="inline-flex items-center justify-center rounded-full bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground transition-all hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/20">
             Unisciti a noi
           </Link>
