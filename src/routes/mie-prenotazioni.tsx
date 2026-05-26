@@ -114,7 +114,7 @@ function MieePrenotazioni() {
       if (statusFilter !== "all" && r.status !== statusFilter) return false;
       if (timeFilter !== "all") {
         const box = boxMap.get(r.food_box_id);
-        if (!box) return timeFilter === "all";
+        if (!box) return true;
         const end = new Date(box.pickup_to).getTime();
         if (timeFilter === "upcoming" && end < now) return false;
         if (timeFilter === "past" && end >= now) return false;
