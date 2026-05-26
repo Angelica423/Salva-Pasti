@@ -43,22 +43,22 @@ function Navbar() {
             Salva Pasti
           </span>
         </Link>
-        <div className="hidden items-center gap-8 md:flex">
-          <a href="#storia" className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">
-            La storia
-          </a>
+        <div className="hidden items-center gap-6 md:flex">
           <a href="#come-funziona" className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">
             Come funziona
-          </a>
-          <a href="#per-chi" className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">
-            Per chi è
           </a>
           <a href="#mappa" className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">
             Mappa
           </a>
-          <a href="#faq" className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">
-            FAQ
-          </a>
+          <Link to="/associazioni" className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">
+            Associazioni
+          </Link>
+          <Link to="/box-sospesa" className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">
+            Box sospesa
+          </Link>
+          <Link to="/mie-prenotazioni" className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">
+            Le mie prenotazioni
+          </Link>
           <Link to="/registrati" className="inline-flex items-center justify-center rounded-full bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground transition-all hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/20">
             Unisciti a noi
           </Link>
@@ -432,6 +432,47 @@ function CTA() {
   );
 }
 
+function ComingSoon() {
+  const items = [
+    { icon: "🎬", title: "Come funziona in video", desc: "60 secondi senza parole, solo immagini. Supera la barriera linguistica." },
+    { icon: "📍", title: "Notifica di prossimità", desc: "Quando sei a 500m da una box disponibile, l'app ti avvisa. Senza questa, metà delle box scadono senza ritiro." },
+    { icon: "🌍", title: "Multilingua", desc: "Italiano, inglese, arabo, rumeno, ucraino. Le famiglie che ricevono spesso non parlano italiano." },
+    { icon: "📊", title: "Storico personale", desc: "Ogni utente vede quante box ha donato o ricevuto e i kg di cibo salvato." },
+    { icon: "🗓️", title: "Donazioni ricorrenti", desc: "Il fornaio che dona ogni venerdì lo imposta una volta sola." },
+    { icon: "🥗", title: "Filtri alimentari", desc: "Vegetariano, senza glutine, halal, kosher. Per ricevere solo cibo adatto." },
+    { icon: "📡", title: "Modalità offline", desc: "Mostra le ultime box disponibili anche senza connessione." },
+  ];
+  return (
+    <section className="bg-muted/30 py-24">
+      <div className="mx-auto max-w-6xl px-6">
+        <AnimatedSection className="mb-12 text-center">
+          <p className="mb-3 text-sm font-medium uppercase tracking-widest text-muted-foreground">
+            In arrivo
+          </p>
+          <h2 className="text-balance text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
+            Le prossime <em className="font-serif italic text-terracotta">funzionalità</em>.
+          </h2>
+          <p className="mx-auto mt-5 max-w-2xl text-lg text-muted-foreground">
+            Quello su cui stiamo lavorando per rendere Salva Pasti uno strumento davvero
+            inclusivo e capillare.
+          </p>
+        </AnimatedSection>
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {items.map((it, i) => (
+            <AnimatedSection key={it.title}>
+              <div className="h-full rounded-2xl border border-border bg-card p-6">
+                <div className="text-3xl">{it.icon}</div>
+                <h3 className="mt-3 text-lg font-semibold text-foreground">{it.title}</h3>
+                <p className="mt-2 text-sm text-muted-foreground">{it.desc}</p>
+              </div>
+            </AnimatedSection>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function Footer() {
   return (
     <footer id="contatti" className="border-t border-border bg-background py-16">
@@ -488,6 +529,7 @@ function Index() {
         <ForReceivers />
         <LiveMap />
         <FAQ />
+        <ComingSoon />
         <RateApp />
         <CTA />
       </main>

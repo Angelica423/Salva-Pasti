@@ -85,12 +85,14 @@ export function LiveMap() {
       if (registration.ruolo !== "associazione" && registration.ruolo !== "volontario") {
         throw new Error("Solo associazioni e volontari possono prenotare.");
       }
-      // 1. insert reservation
+      // 1. insert reservation with pickup code
+      const pickupCode = Math.random().toString(36).slice(2, 8).toUpperCase();
       const { error: resErr } = await supabase.from("reservations").insert({
         food_box_id: box.id,
         reserver_name: registration.nome,
         reserver_email: registration.email,
         reserver_role: registration.ruolo,
+        pickup_code: pickupCode,
       });
       if (resErr) throw new Error(resErr.message);
 

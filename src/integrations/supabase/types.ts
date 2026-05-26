@@ -19,40 +19,52 @@ export type Database = {
           address: string
           created_at: string
           description: string
+          donor_name: string | null
+          food_tags: string[]
           id: string
           lat: number
           lng: number
           pickup_from: string
           pickup_to: string
           portions: number
+          recurrence: string | null
           restaurant_name: string
           status: string
+          suspended: boolean
         }
         Insert: {
           address: string
           created_at?: string
           description: string
+          donor_name?: string | null
+          food_tags?: string[]
           id?: string
           lat: number
           lng: number
           pickup_from: string
           pickup_to: string
           portions?: number
+          recurrence?: string | null
           restaurant_name: string
           status?: string
+          suspended?: boolean
         }
         Update: {
           address?: string
           created_at?: string
           description?: string
+          donor_name?: string | null
+          food_tags?: string[]
           id?: string
           lat?: number
           lng?: number
           pickup_from?: string
           pickup_to?: string
           portions?: number
+          recurrence?: string | null
           restaurant_name?: string
           status?: string
+          suspended?: boolean
         }
         Relationships: []
       }
@@ -61,6 +73,7 @@ export type Database = {
           created_at: string
           food_box_id: string
           id: string
+          pickup_code: string | null
           reserver_email: string
           reserver_name: string
           reserver_role: string
@@ -70,6 +83,7 @@ export type Database = {
           created_at?: string
           food_box_id: string
           id?: string
+          pickup_code?: string | null
           reserver_email: string
           reserver_name: string
           reserver_role: string
@@ -79,6 +93,7 @@ export type Database = {
           created_at?: string
           food_box_id?: string
           id?: string
+          pickup_code?: string | null
           reserver_email?: string
           reserver_name?: string
           reserver_role?: string

@@ -10,11 +10,29 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as RegistratiRouteImport } from './routes/registrati'
+import { Route as MiePrenotazioniRouteImport } from './routes/mie-prenotazioni'
+import { Route as BoxSospesaRouteImport } from './routes/box-sospesa'
+import { Route as AssociazioniRouteImport } from './routes/associazioni'
 import { Route as IndexRouteImport } from './routes/index'
 
 const RegistratiRoute = RegistratiRouteImport.update({
   id: '/registrati',
   path: '/registrati',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MiePrenotazioniRoute = MiePrenotazioniRouteImport.update({
+  id: '/mie-prenotazioni',
+  path: '/mie-prenotazioni',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BoxSospesaRoute = BoxSospesaRouteImport.update({
+  id: '/box-sospesa',
+  path: '/box-sospesa',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AssociazioniRoute = AssociazioniRouteImport.update({
+  id: '/associazioni',
+  path: '/associazioni',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -25,27 +43,55 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/associazioni': typeof AssociazioniRoute
+  '/box-sospesa': typeof BoxSospesaRoute
+  '/mie-prenotazioni': typeof MiePrenotazioniRoute
   '/registrati': typeof RegistratiRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/associazioni': typeof AssociazioniRoute
+  '/box-sospesa': typeof BoxSospesaRoute
+  '/mie-prenotazioni': typeof MiePrenotazioniRoute
   '/registrati': typeof RegistratiRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/associazioni': typeof AssociazioniRoute
+  '/box-sospesa': typeof BoxSospesaRoute
+  '/mie-prenotazioni': typeof MiePrenotazioniRoute
   '/registrati': typeof RegistratiRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/registrati'
+  fullPaths:
+    | '/'
+    | '/associazioni'
+    | '/box-sospesa'
+    | '/mie-prenotazioni'
+    | '/registrati'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/registrati'
-  id: '__root__' | '/' | '/registrati'
+  to:
+    | '/'
+    | '/associazioni'
+    | '/box-sospesa'
+    | '/mie-prenotazioni'
+    | '/registrati'
+  id:
+    | '__root__'
+    | '/'
+    | '/associazioni'
+    | '/box-sospesa'
+    | '/mie-prenotazioni'
+    | '/registrati'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AssociazioniRoute: typeof AssociazioniRoute
+  BoxSospesaRoute: typeof BoxSospesaRoute
+  MiePrenotazioniRoute: typeof MiePrenotazioniRoute
   RegistratiRoute: typeof RegistratiRoute
 }
 
@@ -56,6 +102,27 @@ declare module '@tanstack/react-router' {
       path: '/registrati'
       fullPath: '/registrati'
       preLoaderRoute: typeof RegistratiRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/mie-prenotazioni': {
+      id: '/mie-prenotazioni'
+      path: '/mie-prenotazioni'
+      fullPath: '/mie-prenotazioni'
+      preLoaderRoute: typeof MiePrenotazioniRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/box-sospesa': {
+      id: '/box-sospesa'
+      path: '/box-sospesa'
+      fullPath: '/box-sospesa'
+      preLoaderRoute: typeof BoxSospesaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/associazioni': {
+      id: '/associazioni'
+      path: '/associazioni'
+      fullPath: '/associazioni'
+      preLoaderRoute: typeof AssociazioniRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -70,18 +137,11 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AssociazioniRoute: AssociazioniRoute,
+  BoxSospesaRoute: BoxSospesaRoute,
+  MiePrenotazioniRoute: MiePrenotazioniRoute,
   RegistratiRoute: RegistratiRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
