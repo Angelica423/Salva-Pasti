@@ -114,7 +114,60 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      get_my_reservations: {
+        Args: { p_email: string }
+        Returns: {
+          created_at: string
+          food_box_id: string
+          id: string
+          pickup_code: string | null
+          reserver_email: string
+          reserver_name: string
+          reserver_role: string
+          status: string
+        }[]
+        SetofOptions: {
+          from: "*"
+          to: "reservations"
+          isOneToOne: false
+          isSetofReturn: true
+        }
+      }
+      reserve_food_box: {
+        Args: {
+          p_box_id: string
+          p_email: string
+          p_name: string
+          p_role: string
+        }
+        Returns: {
+          pickup_code: string
+          reservation_id: string
+        }[]
+      }
+      update_reservation_status: {
+        Args: {
+          p_next_status: string
+          p_pickup_code: string
+          p_reservation_id: string
+        }
+        Returns: {
+          created_at: string
+          food_box_id: string
+          id: string
+          pickup_code: string | null
+          reserver_email: string
+          reserver_name: string
+          reserver_role: string
+          status: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "reservations"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
     }
     Enums: {
       [_ in never]: never
