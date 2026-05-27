@@ -3,6 +3,7 @@ import { useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import heroFood from "../assets/hero-food.jpg";
 import { LiveMap } from "@/components/live-map";
+import { ProximityNotifier } from "@/components/proximity-notifier";
 
 export const Route = createFileRoute("/")({
   component: Index,
