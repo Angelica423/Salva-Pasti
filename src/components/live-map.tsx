@@ -85,29 +85,15 @@ export function LiveMap() {
       if (registration.ruolo !== "associazione" && registration.ruolo !== "volontario") {
         throw new Error("Solo associazioni e volontari possono prenotare.");
       }
-      // 1. insert reservation with pickup code
-      const pickupCode = Math.random().toString(36).slice(2, 8).toUpperCase();
-      const { error: resErr } = await supabase.from("reservations").insert({
-        food_box_id: box.id,
-        reserver_name: registration.nome,
-        reserver_email: registration.email,
-        reserver_role: registration.ruolo,
-        pickup_code: pickupCode,
+      const { data, error } = await supabase.rpc("reserve_food_box", {
+        p_box_id: box.id,
+        p_name: registration.nome,
+        p_email: registration.email,
+        p_role: registration.ruolo,
       });
-      if (resErr) throw new Error(resErr.message);
-
-      // 2. flip box status (RLS allows only if currently available)
-      const { data: updated, error: upErr } = await supabase
-        .from("food_boxes")
-        .update({ status: "reserved" })
-        .eq("id", box.id)
-        .eq("status", "available")
-        .select()
-        .single();
-      if (upErr || !updated) {
-        throw new Error("Qualcun altro ha appena prenotato questo box.");
-      }
-      return updated as FoodBox;
+      if (error) throw new Error(error.message);
+      const row = Array.isArray(data) ? data[0] : data;
+      return { ...box, status: "reserved", pickup_code: row?.pickup_code } as FoodBox & { pickup_code?: string };
     },
     onSuccess: (updated) => {
       qc.invalidateQueries({ queryKey: ["food_boxes"] });
