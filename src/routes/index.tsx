@@ -190,6 +190,25 @@ function HowItWorks() {
             <strong className="text-sage">Tutelato per legge.</strong> Donando cibo in buono stato sei tutelato dalla <strong>Legge Gadda (L. 166/2016)</strong>. La tua responsabilità finisce alla consegna. Una sola liberatoria in fase di registrazione, in linguaggio semplice.
           </div>
         </AnimatedSection>
+
+        <AnimatedSection className="mb-14">
+          <div className="overflow-hidden rounded-3xl border border-border bg-card shadow-xl shadow-foreground/5">
+            <video
+              src="/come-funziona.mp4"
+              className="block aspect-video w-full"
+              autoPlay
+              muted
+              loop
+              playsInline
+              controls
+              poster=""
+            />
+          </div>
+          <p className="mt-3 text-center text-xs uppercase tracking-widest text-muted-foreground">
+            24 secondi · senza parole
+          </p>
+        </AnimatedSection>
+
         <div className="grid gap-8 md:grid-cols-3">
           {steps.map((step, i) => (
             <AnimatedSection key={i}>
