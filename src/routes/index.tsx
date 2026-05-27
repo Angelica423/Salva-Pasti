@@ -554,6 +554,7 @@ function Index() {
         <CTA />
       </main>
       <Footer />
+      <ProximityNotifier />
     </>
   );
 }
