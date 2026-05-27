@@ -80,13 +80,11 @@ function MieePrenotazioni() {
     queryKey: ["my-reservations", reg?.email],
     queryFn: async () => {
       if (!reg?.email) return [];
-      const { data, error } = await supabase
-        .from("reservations")
-        .select("*")
-        .eq("reserver_email", reg.email)
-        .order("created_at", { ascending: false });
+      const { data, error } = await supabase.rpc("get_my_reservations", {
+        p_email: reg.email,
+      });
       if (error) throw error;
-      return data as ReservationRow[];
+      return (data ?? []) as ReservationRow[];
     },
     enabled: !!reg?.email,
   });
@@ -131,24 +129,12 @@ function MieePrenotazioni() {
       reservation: ReservationRow;
       next: "cancelled" | "picked_up";
     }) => {
-      const { error } = await supabase
-        .from("reservations")
-        .update({ status: next })
-        .eq("id", reservation.id);
+      const { error } = await supabase.rpc("update_reservation_status", {
+        p_reservation_id: reservation.id,
+        p_pickup_code: reservation.pickup_code ?? "",
+        p_next_status: next,
+      });
       if (error) throw new Error(error.message);
-
-      // If cancelling, free the box again
-      if (next === "cancelled") {
-        await supabase
-          .from("food_boxes")
-          .update({ status: "available" })
-          .eq("id", reservation.food_box_id);
-      } else if (next === "picked_up") {
-        await supabase
-          .from("food_boxes")
-          .update({ status: "picked_up" })
-          .eq("id", reservation.food_box_id);
-      }
     },
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["my-reservations"] });
