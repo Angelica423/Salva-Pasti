@@ -86,26 +86,15 @@ function Associazioni() {
       const codes: string[] = [];
 
       for (const id of ids) {
-        const code = genCode();
-        const { error: resErr } = await supabase.from("reservations").insert({
-          food_box_id: id,
-          reserver_name: reg.nome,
-          reserver_email: reg.email,
-          reserver_role: reg.ruolo,
-          pickup_code: code,
+        const { data, error } = await supabase.rpc("reserve_food_box", {
+          p_box_id: id,
+          p_name: reg.nome,
+          p_email: reg.email,
+          p_role: reg.ruolo,
         });
-        if (resErr) throw new Error(resErr.message);
-        const { data: upd, error: upErr } = await supabase
-          .from("food_boxes")
-          .update({ status: "reserved" })
-          .eq("id", id)
-          .eq("status", "available")
-          .select()
-          .single();
-        if (upErr || !upd) {
-          throw new Error(`Box ${id.slice(0, 6)} non più disponibile.`);
-        }
-        codes.push(code);
+        if (error) throw new Error(error.message);
+        const row = Array.isArray(data) ? data[0] : data;
+        if (row?.pickup_code) codes.push(row.pickup_code);
       }
       return { count: ids.length, codes };
     },
