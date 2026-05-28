@@ -639,7 +639,9 @@ function Index() {
         <FAQ />
         <ComingSoon />
         <RateApp />
+        <DownloadApp />
         <CTA />
+
       </main>
       <Footer />
       <ProximityNotifier />
