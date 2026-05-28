@@ -60,9 +60,13 @@ function Navbar() {
           <Link to="/mie-prenotazioni" className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">
             Le mie prenotazioni
           </Link>
+          <a href="#scarica" className="inline-flex items-center justify-center gap-2 rounded-full border border-foreground/20 px-4 py-2 text-sm font-medium text-foreground transition-all hover:border-foreground/40 hover:bg-foreground/5">
+            <span aria-hidden>⬇</span> Scarica l'app
+          </a>
           <Link to="/registrati" className="inline-flex items-center justify-center rounded-full bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground transition-all hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/20">
             Unisciti a noi
           </Link>
+
         </div>
       </div>
     </nav>
@@ -93,13 +97,14 @@ function Hero() {
             Salva Pasti connette ristoranti, sale ricevimenti e negozi con le associazioni del territorio. In tempo reale, gratuitamente, con dignità.
           </p>
           <div className="mt-10 flex flex-wrap justify-center gap-4">
-            <a href="#come-funziona" className="inline-flex items-center justify-center rounded-full bg-primary px-8 py-3.5 text-base font-semibold text-primary-foreground transition-all hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/20">
+            <a href="#scarica" className="inline-flex items-center justify-center gap-2 rounded-full bg-primary px-8 py-3.5 text-base font-semibold text-primary-foreground transition-all hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/20">
+              <span aria-hidden>⬇</span> Scarica l'app
+            </a>
+            <a href="#come-funziona" className="inline-flex items-center justify-center rounded-full border border-white/25 bg-white/10 px-8 py-3.5 text-base font-medium text-white backdrop-blur-sm transition-all hover:bg-white/20">
               Scopri il progetto
             </a>
-            <Link to="/registrati" className="inline-flex items-center justify-center rounded-full border border-white/25 bg-white/10 px-8 py-3.5 text-base font-medium text-white backdrop-blur-sm transition-all hover:bg-white/20">
-              Unisciti a noi
-            </Link>
           </div>
+
         </motion.div>
       </div>
     </section>
@@ -206,8 +211,9 @@ function HowItWorks() {
             />
           </div>
           <p className="mt-3 text-center text-xs uppercase tracking-widest text-muted-foreground">
-            24 secondi · senza parole
+            60 secondi · senza parole
           </p>
+
         </AnimatedSection>
 
         <div className="grid gap-8 md:grid-cols-3">
@@ -439,13 +445,14 @@ function CTA() {
             Unisciti alla rete in pochi minuti. Nessun costo, nessuna burocrazia. Solo tante porzioni di cibo che trovano una casa.
           </p>
           <div className="mt-10 flex flex-wrap justify-center gap-4">
-            <button className="inline-flex items-center justify-center rounded-full bg-primary px-8 py-3.5 text-base font-semibold text-primary-foreground transition-all hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/20">
-              Inizia ora
-            </button>
-            <button className="inline-flex items-center justify-center rounded-full border border-white/20 bg-white/5 px-8 py-3.5 text-base font-medium text-white backdrop-blur-sm transition-all hover:bg-white/10">
-              Scopri di più
-            </button>
+            <a href="#scarica" className="inline-flex items-center justify-center gap-2 rounded-full bg-primary px-8 py-3.5 text-base font-semibold text-primary-foreground transition-all hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/20">
+              <span aria-hidden>⬇</span> Scarica l'app
+            </a>
+            <Link to="/registrati" className="inline-flex items-center justify-center rounded-full border border-white/20 bg-white/5 px-8 py-3.5 text-base font-medium text-white backdrop-blur-sm transition-all hover:bg-white/10">
+              Unisciti alla rete
+            </Link>
           </div>
+
         </AnimatedSection>
       </div>
     </section>
@@ -493,6 +500,87 @@ function ComingSoon() {
   );
 }
 
+function DownloadApp() {
+  return (
+    <section id="scarica" className="relative overflow-hidden border-t border-border bg-background py-24">
+      <div className="absolute -top-32 right-1/4 h-72 w-72 rounded-full bg-terracotta/10 blur-3xl" aria-hidden />
+      <div className="absolute -bottom-32 left-1/4 h-72 w-72 rounded-full bg-sage/10 blur-3xl" aria-hidden />
+      <div className="relative mx-auto grid max-w-6xl gap-12 px-6 md:grid-cols-2 md:items-center">
+        <AnimatedSection>
+          <p className="mb-3 text-sm font-medium uppercase tracking-widest text-muted-foreground">
+            Disponibile su iOS e Android
+          </p>
+          <h2 className="text-balance text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
+            Scarica <em className="font-serif italic text-terracotta">Salva Pasti</em>.
+          </h2>
+          <p className="mt-5 max-w-lg text-lg leading-relaxed text-muted-foreground">
+            Mappa in tempo reale, notifiche di prossimità, prenotazione in un tap.
+            Gratis, senza pubblicità, con dignità.
+          </p>
+          <div className="mt-8 flex flex-wrap gap-4">
+            <a
+              href="#"
+              aria-label="Scarica su App Store"
+              className="inline-flex items-center gap-3 rounded-2xl bg-foreground px-6 py-3 text-background transition-all hover:opacity-90"
+            >
+              <span className="text-3xl leading-none" aria-hidden></span>
+              <span className="flex flex-col items-start leading-tight">
+                <span className="text-[10px] uppercase tracking-wider opacity-70">Scarica su</span>
+                <span className="text-lg font-semibold">App Store</span>
+              </span>
+            </a>
+            <a
+              href="#"
+              aria-label="Disponibile su Google Play"
+              className="inline-flex items-center gap-3 rounded-2xl bg-foreground px-6 py-3 text-background transition-all hover:opacity-90"
+            >
+              <span className="text-2xl leading-none" aria-hidden>▶</span>
+              <span className="flex flex-col items-start leading-tight">
+                <span className="text-[10px] uppercase tracking-wider opacity-70">Disponibile su</span>
+                <span className="text-lg font-semibold">Google Play</span>
+              </span>
+            </a>
+          </div>
+          <p className="mt-6 text-xs text-muted-foreground">
+            Lancio imminente — iscriviti per ricevere il link al momento del rilascio.
+          </p>
+        </AnimatedSection>
+
+        <AnimatedSection>
+          <div className="relative mx-auto h-[520px] w-[260px]">
+            <div className="absolute inset-0 rounded-[3rem] border border-border bg-card shadow-2xl shadow-foreground/10">
+              <div className="m-3 h-[calc(100%-1.5rem)] overflow-hidden rounded-[2.4rem] bg-gradient-to-br from-sage/15 via-background to-terracotta/15 p-5">
+                <div className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+                  Vicino a te
+                </div>
+                <div className="mt-2 font-serif text-2xl italic leading-tight text-foreground">
+                  3 box <span className="text-terracotta">disponibili</span>
+                </div>
+                <div className="mt-5 space-y-3">
+                  {[
+                    { name: "Trattoria Da Lucia", dist: "420 m", porz: "8 porzioni" },
+                    { name: "Panetteria Sole", dist: "780 m", porz: "12 porzioni" },
+                    { name: "Gelateria Centrale", dist: "1.1 km", porz: "5 porzioni" },
+                  ].map((b) => (
+                    <div key={b.name} className="rounded-2xl border border-border bg-card p-3">
+                      <div className="text-xs font-semibold uppercase tracking-wider text-sage">
+                        {b.dist}
+                      </div>
+                      <div className="mt-1 text-sm font-semibold text-foreground">{b.name}</div>
+                      <div className="text-xs text-muted-foreground">{b.porz}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </AnimatedSection>
+      </div>
+    </section>
+  );
+}
+
+
 function Footer() {
   return (
     <footer id="contatti" className="border-t border-border bg-background py-16">
@@ -519,6 +607,8 @@ function Footer() {
               <li><a href="#per-chi" className="text-sm text-muted-foreground transition-colors hover:text-foreground">Per chi è</a></li>
               <li><a href="#mappa" className="text-sm text-muted-foreground transition-colors hover:text-foreground">Mappa</a></li>
               <li><a href="#faq" className="text-sm text-muted-foreground transition-colors hover:text-foreground">FAQ</a></li>
+              <li><a href="#scarica" className="text-sm text-muted-foreground transition-colors hover:text-foreground">Scarica l'app</a></li>
+
             </ul>
           </div>
           <div>
@@ -551,7 +641,9 @@ function Index() {
         <FAQ />
         <ComingSoon />
         <RateApp />
+        <DownloadApp />
         <CTA />
+
       </main>
       <Footer />
       <ProximityNotifier />

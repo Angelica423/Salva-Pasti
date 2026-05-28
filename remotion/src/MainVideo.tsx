@@ -10,6 +10,8 @@ import { SceneRistorante } from "./scenes/SceneRistorante";
 import { SceneMappa } from "./scenes/SceneMappa";
 import { ScenePrenota } from "./scenes/ScenePrenota";
 import { SceneRitiro } from "./scenes/SceneRitiro";
+import { SceneProssimita } from "./scenes/SceneProssimita";
+import { SceneImpatto } from "./scenes/SceneImpatto";
 import { SceneOutro } from "./scenes/SceneOutro";
 
 const { fontFamily: display } = loadDisplay("normal", { weights: ["400"], subsets: ["latin"] });
@@ -27,36 +29,50 @@ export const palette = {
   gold: "#d4a14a",
 };
 
+// Timing budget @30fps = 60s = 1800 frames.
+// Sequences sum = 1940, transitions (7 × 20) overlap = 140 → 1800 total.
+const T = 20;
+
 export const MainVideo: React.FC = () => {
   return (
     <AbsoluteFill style={{ backgroundColor: palette.bg, fontFamily: fonts.body, color: palette.ink }}>
       <TransitionSeries>
-        <TransitionSeries.Sequence durationInFrames={110}>
+        <TransitionSeries.Sequence durationInFrames={200}>
           <SceneIntro />
         </TransitionSeries.Sequence>
-        <TransitionSeries.Transition presentation={fade()} timing={linearTiming({ durationInFrames: 18 })} />
+        <TransitionSeries.Transition presentation={fade()} timing={linearTiming({ durationInFrames: T })} />
 
-        <TransitionSeries.Sequence durationInFrames={130}>
+        <TransitionSeries.Sequence durationInFrames={240}>
           <SceneRistorante />
         </TransitionSeries.Sequence>
-        <TransitionSeries.Transition presentation={slide({ direction: "from-right" })} timing={linearTiming({ durationInFrames: 22 })} />
+        <TransitionSeries.Transition presentation={slide({ direction: "from-right" })} timing={linearTiming({ durationInFrames: T })} />
 
-        <TransitionSeries.Sequence durationInFrames={140}>
+        <TransitionSeries.Sequence durationInFrames={260}>
           <SceneMappa />
         </TransitionSeries.Sequence>
-        <TransitionSeries.Transition presentation={slide({ direction: "from-right" })} timing={linearTiming({ durationInFrames: 22 })} />
+        <TransitionSeries.Transition presentation={slide({ direction: "from-right" })} timing={linearTiming({ durationInFrames: T })} />
 
-        <TransitionSeries.Sequence durationInFrames={130}>
+        <TransitionSeries.Sequence durationInFrames={240}>
           <ScenePrenota />
         </TransitionSeries.Sequence>
-        <TransitionSeries.Transition presentation={slide({ direction: "from-right" })} timing={linearTiming({ durationInFrames: 22 })} />
+        <TransitionSeries.Transition presentation={slide({ direction: "from-right" })} timing={linearTiming({ durationInFrames: T })} />
 
-        <TransitionSeries.Sequence durationInFrames={130}>
+        <TransitionSeries.Sequence durationInFrames={240}>
           <SceneRitiro />
         </TransitionSeries.Sequence>
-        <TransitionSeries.Transition presentation={fade()} timing={linearTiming({ durationInFrames: 22 })} />
+        <TransitionSeries.Transition presentation={fade()} timing={linearTiming({ durationInFrames: T })} />
 
-        <TransitionSeries.Sequence durationInFrames={120}>
+        <TransitionSeries.Sequence durationInFrames={260}>
+          <SceneProssimita />
+        </TransitionSeries.Sequence>
+        <TransitionSeries.Transition presentation={slide({ direction: "from-right" })} timing={linearTiming({ durationInFrames: T })} />
+
+        <TransitionSeries.Sequence durationInFrames={240}>
+          <SceneImpatto />
+        </TransitionSeries.Sequence>
+        <TransitionSeries.Transition presentation={fade()} timing={linearTiming({ durationInFrames: T })} />
+
+        <TransitionSeries.Sequence durationInFrames={260}>
           <SceneOutro />
         </TransitionSeries.Sequence>
       </TransitionSeries>
