@@ -60,9 +60,13 @@ function Navbar() {
           <Link to="/mie-prenotazioni" className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">
             Le mie prenotazioni
           </Link>
+          <a href="#scarica" className="inline-flex items-center justify-center gap-2 rounded-full border border-foreground/20 px-4 py-2 text-sm font-medium text-foreground transition-all hover:border-foreground/40 hover:bg-foreground/5">
+            <span aria-hidden>⬇</span> Scarica l'app
+          </a>
           <Link to="/registrati" className="inline-flex items-center justify-center rounded-full bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground transition-all hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/20">
             Unisciti a noi
           </Link>
+
         </div>
       </div>
     </nav>
@@ -93,13 +97,14 @@ function Hero() {
             Salva Pasti connette ristoranti, sale ricevimenti e negozi con le associazioni del territorio. In tempo reale, gratuitamente, con dignità.
           </p>
           <div className="mt-10 flex flex-wrap justify-center gap-4">
-            <a href="#come-funziona" className="inline-flex items-center justify-center rounded-full bg-primary px-8 py-3.5 text-base font-semibold text-primary-foreground transition-all hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/20">
+            <a href="#scarica" className="inline-flex items-center justify-center gap-2 rounded-full bg-primary px-8 py-3.5 text-base font-semibold text-primary-foreground transition-all hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/20">
+              <span aria-hidden>⬇</span> Scarica l'app
+            </a>
+            <a href="#come-funziona" className="inline-flex items-center justify-center rounded-full border border-white/25 bg-white/10 px-8 py-3.5 text-base font-medium text-white backdrop-blur-sm transition-all hover:bg-white/20">
               Scopri il progetto
             </a>
-            <Link to="/registrati" className="inline-flex items-center justify-center rounded-full border border-white/25 bg-white/10 px-8 py-3.5 text-base font-medium text-white backdrop-blur-sm transition-all hover:bg-white/20">
-              Unisciti a noi
-            </Link>
           </div>
+
         </motion.div>
       </div>
     </section>
@@ -206,8 +211,9 @@ function HowItWorks() {
             />
           </div>
           <p className="mt-3 text-center text-xs uppercase tracking-widest text-muted-foreground">
-            24 secondi · senza parole
+            60 secondi · senza parole
           </p>
+
         </AnimatedSection>
 
         <div className="grid gap-8 md:grid-cols-3">
@@ -439,13 +445,14 @@ function CTA() {
             Unisciti alla rete in pochi minuti. Nessun costo, nessuna burocrazia. Solo tante porzioni di cibo che trovano una casa.
           </p>
           <div className="mt-10 flex flex-wrap justify-center gap-4">
-            <button className="inline-flex items-center justify-center rounded-full bg-primary px-8 py-3.5 text-base font-semibold text-primary-foreground transition-all hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/20">
-              Inizia ora
-            </button>
-            <button className="inline-flex items-center justify-center rounded-full border border-white/20 bg-white/5 px-8 py-3.5 text-base font-medium text-white backdrop-blur-sm transition-all hover:bg-white/10">
-              Scopri di più
-            </button>
+            <a href="#scarica" className="inline-flex items-center justify-center gap-2 rounded-full bg-primary px-8 py-3.5 text-base font-semibold text-primary-foreground transition-all hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/20">
+              <span aria-hidden>⬇</span> Scarica l'app
+            </a>
+            <Link to="/registrati" className="inline-flex items-center justify-center rounded-full border border-white/20 bg-white/5 px-8 py-3.5 text-base font-medium text-white backdrop-blur-sm transition-all hover:bg-white/10">
+              Unisciti alla rete
+            </Link>
           </div>
+
         </AnimatedSection>
       </div>
     </section>
