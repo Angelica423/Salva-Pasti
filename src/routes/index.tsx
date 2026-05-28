@@ -607,6 +607,8 @@ function Footer() {
               <li><a href="#per-chi" className="text-sm text-muted-foreground transition-colors hover:text-foreground">Per chi è</a></li>
               <li><a href="#mappa" className="text-sm text-muted-foreground transition-colors hover:text-foreground">Mappa</a></li>
               <li><a href="#faq" className="text-sm text-muted-foreground transition-colors hover:text-foreground">FAQ</a></li>
+              <li><a href="#scarica" className="text-sm text-muted-foreground transition-colors hover:text-foreground">Scarica l'app</a></li>
+
             </ul>
           </div>
           <div>
