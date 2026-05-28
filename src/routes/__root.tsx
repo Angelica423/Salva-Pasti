@@ -80,6 +80,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:site", content: "@salvapasti" },
+      { name: "twitter:title", content: "Salva Pasti — Il cibo non si butta. Si condivide." },
+      { name: "twitter:description", content: "Connettiamo ristoranti e associazioni per salvare il cibo dallo spreco e distribuirlo con dignità." },
+      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/dec6b25d-7ec9-4f88-9a29-217e1668f705" },
+      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/dec6b25d-7ec9-4f88-9a29-217e1668f705" },
     ],
     links: [
       {
