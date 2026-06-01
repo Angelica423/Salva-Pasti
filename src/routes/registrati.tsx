@@ -28,10 +28,11 @@ type Registration = {
 const LIBERATORIA_VERSIONE = "1.0";
 
 function Registrati() {
+  const search = Route.useSearch();
   const [existing, setExisting] = useState<Registration | null>(null);
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
-  const [ruolo, setRuolo] = useState<Registration["ruolo"]>("ristoratore");
+  const [ruolo, setRuolo] = useState<Registration["ruolo"]>(search.ruolo ?? "ristoratore");
   const [accettata, setAccettata] = useState(false);
   const [errore, setErrore] = useState<string | null>(null);
   const [submitted, setSubmitted] = useState(false);
