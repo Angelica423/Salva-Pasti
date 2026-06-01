@@ -396,37 +396,47 @@ export function LiveMap() {
                   exit={{ opacity: 0 }}
                 >
                   <p className="text-xs font-medium uppercase tracking-widest text-muted-foreground">
-                    {isLoading ? "Caricamento" : "Box in città"}
+                    {isLoading ? "Caricamento" : userPos ? "Più vicine a te" : "Box in città"}
                   </p>
                   <h3 className="mt-1 text-2xl font-semibold text-foreground">
                     {isLoading ? "..." : `${available} box disponibili ora`}
                   </h3>
                   <p className="mt-3 text-sm text-muted-foreground">
-                    Tocca un pin sulla mappa per vedere il dettaglio e prenotare.
+                    {userPos
+                      ? "Mappa centrata sulla tua posizione. Tocca un pin per il dettaglio."
+                      : "Tocca un pin sulla mappa per vedere il dettaglio e prenotare."}
                   </p>
                   <ul className="mt-5 space-y-2">
-                    {boxes.slice(0, 6).map((b) => (
+                    {boxesWithDistance.slice(0, 6).map(({ box: b, distance }) => (
                       <li key={b.id}>
                         <button
                           onClick={() => setSelectedId(b.id)}
-                          className="flex w-full items-center justify-between rounded-lg border border-border px-3 py-2 text-left text-sm transition-colors hover:bg-muted"
+                          className="flex w-full items-center justify-between gap-3 rounded-lg border border-border px-3 py-2 text-left text-sm transition-colors hover:bg-muted"
                         >
                           <span className="font-medium text-foreground">
                             {b.restaurant_name}
                           </span>
-                          <span
-                            className={
-                              b.status === "available"
-                                ? "text-xs font-medium text-sage"
-                                : "text-xs text-muted-foreground"
-                            }
-                          >
-                            {b.status === "available" ? "Disponibile" : "Prenotato"}
+                          <span className="flex items-center gap-2">
+                            {distance !== null && (
+                              <span className="text-xs text-muted-foreground">
+                                {formatDistance(distance)}
+                              </span>
+                            )}
+                            <span
+                              className={
+                                b.status === "available"
+                                  ? "text-xs font-medium text-sage"
+                                  : "text-xs text-muted-foreground"
+                              }
+                            >
+                              {b.status === "available" ? "Disponibile" : "Prenotato"}
+                            </span>
                           </span>
                         </button>
                       </li>
                     ))}
                   </ul>
+
                 </motion.div>
               )}
             </AnimatePresence>
