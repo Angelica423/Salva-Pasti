@@ -336,7 +336,14 @@ export function LiveMap() {
                         {formatWindow(selected.pickup_from, selected.pickup_to)}
                       </dd>
                     </div>
+                    {selectedDistance !== null && (
+                      <div className="flex justify-between">
+                        <dt className="text-muted-foreground">Distanza</dt>
+                        <dd className="text-foreground">{formatDistance(selectedDistance)}</dd>
+                      </div>
+                    )}
                   </dl>
+
 
                   {selected.status !== "available" ? (
                     <div className="mt-6 rounded-lg bg-muted px-4 py-3 text-sm text-muted-foreground">
