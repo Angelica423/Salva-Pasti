@@ -45,11 +45,48 @@ function formatWindow(from: string, to: string) {
   return `${f.toLocaleTimeString("it-IT", opts)} – ${t.toLocaleTimeString("it-IT", opts)}`;
 }
 
+function distanceMeters(lat1: number, lng1: number, lat2: number, lng2: number) {
+  const R = 6371000;
+  const toRad = (d: number) => (d * Math.PI) / 180;
+  const dLat = toRad(lat2 - lat1);
+  const dLng = toRad(lng2 - lng1);
+  const a =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLng / 2) ** 2;
+  return 2 * R * Math.asin(Math.sqrt(a));
+}
+
+function formatDistance(m: number) {
+  if (m < 1000) return `${Math.round(m)} m`;
+  return `${(m / 1000).toFixed(1)} km`;
+}
+
+
 export function LiveMap() {
   const qc = useQueryClient();
   const registration = useRegistration();
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [confirmation, setConfirmation] = useState<{ box: FoodBox } | null>(null);
+  const [userPos, setUserPos] = useState<{ lat: number; lng: number } | null>(null);
+  const [geoStatus, setGeoStatus] = useState<"idle" | "loading" | "ok" | "denied" | "unsupported">("idle");
+
+  useEffect(() => {
+    if (typeof window === "undefined" || !("geolocation" in navigator)) {
+      setGeoStatus("unsupported");
+      return;
+    }
+    setGeoStatus("loading");
+    const id = navigator.geolocation.watchPosition(
+      (p) => {
+        setUserPos({ lat: p.coords.latitude, lng: p.coords.longitude });
+        setGeoStatus("ok");
+      },
+      () => setGeoStatus("denied"),
+      { enableHighAccuracy: true, maximumAge: 30_000, timeout: 15_000 },
+    );
+    return () => navigator.geolocation.clearWatch(id);
+  }, []);
+
 
   const { data: boxes = [], isLoading } = useQuery({
     queryKey: ["food_boxes"],
@@ -102,36 +139,51 @@ export function LiveMap() {
     },
   });
 
-  // Normalize lat/lng into 0-100% of the map area
+  // If user position is known, center map around it; include it in bounds
   const positions = useMemo(() => {
     if (boxes.length === 0) return new Map<string, { top: string; left: string }>();
     const lats = boxes.map((b) => b.lat);
     const lngs = boxes.map((b) => b.lng);
+    if (userPos) {
+      lats.push(userPos.lat);
+      lngs.push(userPos.lng);
+    }
     const minLat = Math.min(...lats);
     const maxLat = Math.max(...lats);
     const minLng = Math.min(...lngs);
     const maxLng = Math.max(...lngs);
     const padX = 0.12;
     const padY = 0.18;
-    return new Map(
-      boxes.map((b) => {
-        const x = maxLng === minLng ? 0.5 : (b.lng - minLng) / (maxLng - minLng);
-        const y = maxLat === minLat ? 0.5 : 1 - (b.lat - minLat) / (maxLat - minLat);
-        return [
-          b.id,
-          {
-            left: `${(padX + x * (1 - 2 * padX)) * 100}%`,
-            top: `${(padY + y * (1 - 2 * padY)) * 100}%`,
-          },
-        ];
-      }),
-    );
-  }, [boxes]);
+    const project = (lat: number, lng: number) => {
+      const x = maxLng === minLng ? 0.5 : (lng - minLng) / (maxLng - minLng);
+      const y = maxLat === minLat ? 0.5 : 1 - (lat - minLat) / (maxLat - minLat);
+      return {
+        left: `${(padX + x * (1 - 2 * padX)) * 100}%`,
+        top: `${(padY + y * (1 - 2 * padY)) * 100}%`,
+      };
+    };
+    const map = new Map(boxes.map((b) => [b.id, project(b.lat, b.lng)]));
+    if (userPos) map.set("__me__", project(userPos.lat, userPos.lng));
+    return map;
+  }, [boxes, userPos]);
+
+  const userPinPos = positions.get("__me__");
+
+  // Distances + sorted list (by distance when we know where user is)
+  const boxesWithDistance = useMemo(() => {
+    if (!userPos) return boxes.map((b) => ({ box: b, distance: null as number | null }));
+    return boxes
+      .map((b) => ({ box: b, distance: distanceMeters(userPos.lat, userPos.lng, b.lat, b.lng) }))
+      .sort((a, b) => (a.distance ?? 0) - (b.distance ?? 0));
+  }, [boxes, userPos]);
 
   const selected = boxes.find((b) => b.id === selectedId) ?? null;
+  const selectedDistance =
+    selected && userPos ? distanceMeters(userPos.lat, userPos.lng, selected.lat, selected.lng) : null;
   const available = boxes.filter((b) => b.status === "available").length;
   const canReserve =
     registration?.ruolo === "associazione" || registration?.ruolo === "volontario";
+
 
   return (
     <section id="mappa" className="bg-background py-24">
@@ -216,13 +268,37 @@ export function LiveMap() {
               );
             })}
 
+            {userPinPos && (
+              <motion.div
+                className="pointer-events-none absolute -translate-x-1/2 -translate-y-1/2"
+                style={{ top: userPinPos.top, left: userPinPos.left }}
+                initial={{ opacity: 0, scale: 0 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.4, ease: "backOut" }}
+                aria-label="La tua posizione"
+              >
+                <div className="relative">
+                  <motion.div
+                    className="absolute -inset-3 rounded-full bg-primary/30"
+                    animate={{ scale: [1, 2, 1], opacity: [0.5, 0, 0.5] }}
+                    transition={{ duration: 2.2, repeat: Infinity }}
+                  />
+                  <div className="relative h-4 w-4 rounded-full bg-primary ring-4 ring-background shadow-lg" />
+                </div>
+              </motion.div>
+            )}
+
             <div className="absolute bottom-4 left-4 rounded-lg bg-background/90 px-3 py-2 text-xs font-medium text-foreground backdrop-blur-sm">
               <span
                 className="mr-2 inline-block h-2 w-2 animate-pulse rounded-full"
                 style={{ backgroundColor: "var(--terracotta)" }}
               />
               {available} box disponibili · {boxes.length - available} prenotati
+              {geoStatus === "ok" && " · centrata su di te"}
+              {geoStatus === "loading" && " · localizzazione…"}
+              {geoStatus === "denied" && " · posizione non consentita"}
             </div>
+
           </div>
 
           {/* Side panel */}
@@ -260,7 +336,14 @@ export function LiveMap() {
                         {formatWindow(selected.pickup_from, selected.pickup_to)}
                       </dd>
                     </div>
+                    {selectedDistance !== null && (
+                      <div className="flex justify-between">
+                        <dt className="text-muted-foreground">Distanza</dt>
+                        <dd className="text-foreground">{formatDistance(selectedDistance)}</dd>
+                      </div>
+                    )}
                   </dl>
+
 
                   {selected.status !== "available" ? (
                     <div className="mt-6 rounded-lg bg-muted px-4 py-3 text-sm text-muted-foreground">
@@ -313,37 +396,47 @@ export function LiveMap() {
                   exit={{ opacity: 0 }}
                 >
                   <p className="text-xs font-medium uppercase tracking-widest text-muted-foreground">
-                    {isLoading ? "Caricamento" : "Box in città"}
+                    {isLoading ? "Caricamento" : userPos ? "Più vicine a te" : "Box in città"}
                   </p>
                   <h3 className="mt-1 text-2xl font-semibold text-foreground">
                     {isLoading ? "..." : `${available} box disponibili ora`}
                   </h3>
                   <p className="mt-3 text-sm text-muted-foreground">
-                    Tocca un pin sulla mappa per vedere il dettaglio e prenotare.
+                    {userPos
+                      ? "Mappa centrata sulla tua posizione. Tocca un pin per il dettaglio."
+                      : "Tocca un pin sulla mappa per vedere il dettaglio e prenotare."}
                   </p>
                   <ul className="mt-5 space-y-2">
-                    {boxes.slice(0, 6).map((b) => (
+                    {boxesWithDistance.slice(0, 6).map(({ box: b, distance }) => (
                       <li key={b.id}>
                         <button
                           onClick={() => setSelectedId(b.id)}
-                          className="flex w-full items-center justify-between rounded-lg border border-border px-3 py-2 text-left text-sm transition-colors hover:bg-muted"
+                          className="flex w-full items-center justify-between gap-3 rounded-lg border border-border px-3 py-2 text-left text-sm transition-colors hover:bg-muted"
                         >
                           <span className="font-medium text-foreground">
                             {b.restaurant_name}
                           </span>
-                          <span
-                            className={
-                              b.status === "available"
-                                ? "text-xs font-medium text-sage"
-                                : "text-xs text-muted-foreground"
-                            }
-                          >
-                            {b.status === "available" ? "Disponibile" : "Prenotato"}
+                          <span className="flex items-center gap-2">
+                            {distance !== null && (
+                              <span className="text-xs text-muted-foreground">
+                                {formatDistance(distance)}
+                              </span>
+                            )}
+                            <span
+                              className={
+                                b.status === "available"
+                                  ? "text-xs font-medium text-sage"
+                                  : "text-xs text-muted-foreground"
+                              }
+                            >
+                              {b.status === "available" ? "Disponibile" : "Prenotato"}
+                            </span>
                           </span>
                         </button>
                       </li>
                     ))}
                   </ul>
+
                 </motion.div>
               )}
             </AnimatePresence>
