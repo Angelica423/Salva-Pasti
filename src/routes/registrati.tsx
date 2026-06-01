@@ -4,6 +4,14 @@ import { motion } from "framer-motion";
 
 export const Route = createFileRoute("/registrati")({
   component: Registrati,
+  validateSearch: (search: Record<string, unknown>) => {
+    const valid = ["ristoratore", "associazione", "volontario", "cittadino"] as const;
+    const ruolo = search.ruolo as string | undefined;
+    if (ruolo && valid.includes(ruolo as any)) {
+      return { ruolo: ruolo as typeof valid[number] };
+    }
+    return {} as { ruolo?: typeof valid[number] };
+  },
 });
 
 const STORAGE_KEY = "salvapasti:registration";
