@@ -139,36 +139,51 @@ export function LiveMap() {
     },
   });
 
-  // Normalize lat/lng into 0-100% of the map area
+  // If user position is known, center map around it; include it in bounds
   const positions = useMemo(() => {
     if (boxes.length === 0) return new Map<string, { top: string; left: string }>();
     const lats = boxes.map((b) => b.lat);
     const lngs = boxes.map((b) => b.lng);
+    if (userPos) {
+      lats.push(userPos.lat);
+      lngs.push(userPos.lng);
+    }
     const minLat = Math.min(...lats);
     const maxLat = Math.max(...lats);
     const minLng = Math.min(...lngs);
     const maxLng = Math.max(...lngs);
     const padX = 0.12;
     const padY = 0.18;
-    return new Map(
-      boxes.map((b) => {
-        const x = maxLng === minLng ? 0.5 : (b.lng - minLng) / (maxLng - minLng);
-        const y = maxLat === minLat ? 0.5 : 1 - (b.lat - minLat) / (maxLat - minLat);
-        return [
-          b.id,
-          {
-            left: `${(padX + x * (1 - 2 * padX)) * 100}%`,
-            top: `${(padY + y * (1 - 2 * padY)) * 100}%`,
-          },
-        ];
-      }),
-    );
-  }, [boxes]);
+    const project = (lat: number, lng: number) => {
+      const x = maxLng === minLng ? 0.5 : (lng - minLng) / (maxLng - minLng);
+      const y = maxLat === minLat ? 0.5 : 1 - (lat - minLat) / (maxLat - minLat);
+      return {
+        left: `${(padX + x * (1 - 2 * padX)) * 100}%`,
+        top: `${(padY + y * (1 - 2 * padY)) * 100}%`,
+      };
+    };
+    const map = new Map(boxes.map((b) => [b.id, project(b.lat, b.lng)]));
+    if (userPos) map.set("__me__", project(userPos.lat, userPos.lng));
+    return map;
+  }, [boxes, userPos]);
+
+  const userPinPos = positions.get("__me__");
+
+  // Distances + sorted list (by distance when we know where user is)
+  const boxesWithDistance = useMemo(() => {
+    if (!userPos) return boxes.map((b) => ({ box: b, distance: null as number | null }));
+    return boxes
+      .map((b) => ({ box: b, distance: distanceMeters(userPos.lat, userPos.lng, b.lat, b.lng) }))
+      .sort((a, b) => (a.distance ?? 0) - (b.distance ?? 0));
+  }, [boxes, userPos]);
 
   const selected = boxes.find((b) => b.id === selectedId) ?? null;
+  const selectedDistance =
+    selected && userPos ? distanceMeters(userPos.lat, userPos.lng, selected.lat, selected.lng) : null;
   const available = boxes.filter((b) => b.status === "available").length;
   const canReserve =
     registration?.ruolo === "associazione" || registration?.ruolo === "volontario";
+
 
   return (
     <section id="mappa" className="bg-background py-24">
