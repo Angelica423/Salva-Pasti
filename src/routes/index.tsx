@@ -316,12 +316,32 @@ function ForReceivers() {
                 </p>
                 <h3 className="mb-3 text-xl font-bold tracking-tight text-foreground">{s.title}</h3>
                 <p className="mb-8 flex-1 text-base leading-relaxed text-muted-foreground">{s.body}</p>
-                <button
-                  className="inline-flex items-center justify-center rounded-full px-6 py-2.5 text-sm font-semibold text-white transition-all hover:opacity-90"
-                  style={{ backgroundColor: `var(--${s.color})` }}
-                >
-                  👉 {s.cta}
-                </button>
+                {s.cta === "Diventa partner" ? (
+                  <Link
+                    to="/registrati"
+                    search={{ ruolo: "associazione" }}
+                    className="inline-flex items-center justify-center rounded-full px-6 py-2.5 text-sm font-semibold text-white transition-all hover:opacity-90"
+                    style={{ backgroundColor: `var(--${s.color})` }}
+                  >
+                    👉 {s.cta}
+                  </Link>
+                ) : s.cta === "Diventa volontario" ? (
+                  <Link
+                    to="/registrati"
+                    search={{ ruolo: "volontario" }}
+                    className="inline-flex items-center justify-center rounded-full px-6 py-2.5 text-sm font-semibold text-white transition-all hover:opacity-90"
+                    style={{ backgroundColor: `var(--${s.color})` }}
+                  >
+                    👉 {s.cta}
+                  </Link>
+                ) : (
+                  <button
+                    className="inline-flex items-center justify-center rounded-full px-6 py-2.5 text-sm font-semibold text-white transition-all hover:opacity-90"
+                    style={{ backgroundColor: `var(--${s.color})` }}
+                  >
+                    👉 {s.cta}
+                  </button>
+                )}
               </div>
             </AnimatedSection>
           ))}
