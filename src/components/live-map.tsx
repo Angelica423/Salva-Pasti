@@ -268,13 +268,37 @@ export function LiveMap() {
               );
             })}
 
+            {userPinPos && (
+              <motion.div
+                className="pointer-events-none absolute -translate-x-1/2 -translate-y-1/2"
+                style={{ top: userPinPos.top, left: userPinPos.left }}
+                initial={{ opacity: 0, scale: 0 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.4, ease: "backOut" }}
+                aria-label="La tua posizione"
+              >
+                <div className="relative">
+                  <motion.div
+                    className="absolute -inset-3 rounded-full bg-primary/30"
+                    animate={{ scale: [1, 2, 1], opacity: [0.5, 0, 0.5] }}
+                    transition={{ duration: 2.2, repeat: Infinity }}
+                  />
+                  <div className="relative h-4 w-4 rounded-full bg-primary ring-4 ring-background shadow-lg" />
+                </div>
+              </motion.div>
+            )}
+
             <div className="absolute bottom-4 left-4 rounded-lg bg-background/90 px-3 py-2 text-xs font-medium text-foreground backdrop-blur-sm">
               <span
                 className="mr-2 inline-block h-2 w-2 animate-pulse rounded-full"
                 style={{ backgroundColor: "var(--terracotta)" }}
               />
               {available} box disponibili · {boxes.length - available} prenotati
+              {geoStatus === "ok" && " · centrata su di te"}
+              {geoStatus === "loading" && " · localizzazione…"}
+              {geoStatus === "denied" && " · posizione non consentita"}
             </div>
+
           </div>
 
           {/* Side panel */}
