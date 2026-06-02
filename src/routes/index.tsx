@@ -335,12 +335,13 @@ function ForReceivers() {
                     👉 {s.cta}
                   </Link>
                 ) : (
-                  <button
+                  <a
+                    href="#mappa"
                     className="inline-flex items-center justify-center rounded-full px-6 py-2.5 text-sm font-semibold text-white transition-all hover:opacity-90"
                     style={{ backgroundColor: `var(--${s.color})` }}
                   >
                     👉 {s.cta}
-                  </button>
+                  </a>
                 )}
               </div>
             </AnimatedSection>
