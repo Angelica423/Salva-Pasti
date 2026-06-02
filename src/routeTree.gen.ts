@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as RegistratiRouteImport } from './routes/registrati'
+import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as MiePrenotazioniRouteImport } from './routes/mie-prenotazioni'
 import { Route as BoxSospesaRouteImport } from './routes/box-sospesa'
 import { Route as AssociazioniRouteImport } from './routes/associazioni'
@@ -18,6 +19,11 @@ import { Route as IndexRouteImport } from './routes/index'
 const RegistratiRoute = RegistratiRouteImport.update({
   id: '/registrati',
   path: '/registrati',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MiePrenotazioniRoute = MiePrenotazioniRouteImport.update({
@@ -46,6 +52,7 @@ export interface FileRoutesByFullPath {
   '/associazioni': typeof AssociazioniRoute
   '/box-sospesa': typeof BoxSospesaRoute
   '/mie-prenotazioni': typeof MiePrenotazioniRoute
+  '/privacy': typeof PrivacyRoute
   '/registrati': typeof RegistratiRoute
 }
 export interface FileRoutesByTo {
@@ -53,6 +60,7 @@ export interface FileRoutesByTo {
   '/associazioni': typeof AssociazioniRoute
   '/box-sospesa': typeof BoxSospesaRoute
   '/mie-prenotazioni': typeof MiePrenotazioniRoute
+  '/privacy': typeof PrivacyRoute
   '/registrati': typeof RegistratiRoute
 }
 export interface FileRoutesById {
@@ -61,6 +69,7 @@ export interface FileRoutesById {
   '/associazioni': typeof AssociazioniRoute
   '/box-sospesa': typeof BoxSospesaRoute
   '/mie-prenotazioni': typeof MiePrenotazioniRoute
+  '/privacy': typeof PrivacyRoute
   '/registrati': typeof RegistratiRoute
 }
 export interface FileRouteTypes {
@@ -70,6 +79,7 @@ export interface FileRouteTypes {
     | '/associazioni'
     | '/box-sospesa'
     | '/mie-prenotazioni'
+    | '/privacy'
     | '/registrati'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -77,6 +87,7 @@ export interface FileRouteTypes {
     | '/associazioni'
     | '/box-sospesa'
     | '/mie-prenotazioni'
+    | '/privacy'
     | '/registrati'
   id:
     | '__root__'
@@ -84,6 +95,7 @@ export interface FileRouteTypes {
     | '/associazioni'
     | '/box-sospesa'
     | '/mie-prenotazioni'
+    | '/privacy'
     | '/registrati'
   fileRoutesById: FileRoutesById
 }
@@ -92,6 +104,7 @@ export interface RootRouteChildren {
   AssociazioniRoute: typeof AssociazioniRoute
   BoxSospesaRoute: typeof BoxSospesaRoute
   MiePrenotazioniRoute: typeof MiePrenotazioniRoute
+  PrivacyRoute: typeof PrivacyRoute
   RegistratiRoute: typeof RegistratiRoute
 }
 
@@ -102,6 +115,13 @@ declare module '@tanstack/react-router' {
       path: '/registrati'
       fullPath: '/registrati'
       preLoaderRoute: typeof RegistratiRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/mie-prenotazioni': {
@@ -140,6 +160,7 @@ const rootRouteChildren: RootRouteChildren = {
   AssociazioniRoute: AssociazioniRoute,
   BoxSospesaRoute: BoxSospesaRoute,
   MiePrenotazioniRoute: MiePrenotazioniRoute,
+  PrivacyRoute: PrivacyRoute,
   RegistratiRoute: RegistratiRoute,
 }
 export const routeTree = rootRouteImport
