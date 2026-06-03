@@ -483,7 +483,6 @@ function CTA() {
 
 function ComingSoon() {
   const items = [
-    { icon: "🎬", title: "Come funziona in video", desc: "60 secondi senza parole, solo immagini. Supera la barriera linguistica." },
     { icon: "📍", title: "Notifica di prossimità", desc: "Quando sei a 500m da una box disponibile, l'app ti avvisa. Senza questa, metà delle box scadono senza ritiro." },
     { icon: "🌍", title: "Multilingua", desc: "Italiano, inglese, arabo, rumeno, ucraino. Le famiglie che ricevono spesso non parlano italiano." },
     { icon: "📊", title: "Storico personale", desc: "Ogni utente vede quante box ha donato o ricevuto e i kg di cibo salvato." },
@@ -506,8 +505,30 @@ function ComingSoon() {
             inclusivo e capillare.
           </p>
         </AnimatedSection>
+
+        <AnimatedSection className="mb-10">
+          <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-lg shadow-foreground/5">
+            <div className="flex items-center gap-3 border-b border-border px-6 py-4">
+              <span className="text-2xl" aria-hidden>🎬</span>
+              <div>
+                <h3 className="text-lg font-semibold text-foreground">Come funziona in video</h3>
+                <p className="text-sm text-muted-foreground">60 secondi senza parole, solo immagini. Supera la barriera linguistica.</p>
+              </div>
+            </div>
+            <video
+              src="/come-funziona.mp4"
+              className="block aspect-video w-full"
+              autoPlay
+              muted
+              loop
+              playsInline
+              controls
+            />
+          </div>
+        </AnimatedSection>
+
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {items.map((it, i) => (
+          {items.map((it) => (
             <AnimatedSection key={it.title}>
               <div className="h-full rounded-2xl border border-border bg-card p-6">
                 <div className="text-3xl">{it.icon}</div>
