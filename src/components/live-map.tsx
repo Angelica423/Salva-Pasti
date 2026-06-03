@@ -79,10 +79,13 @@ function formatDistance(m: number) {
 export function LiveMap() {
   const qc = useQueryClient();
   const registration = useRegistration();
+  const { t } = useI18n();
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [confirmation, setConfirmation] = useState<{ box: FoodBox } | null>(null);
   const [userPos, setUserPos] = useState<{ lat: number; lng: number } | null>(null);
   const [geoStatus, setGeoStatus] = useState<"idle" | "loading" | "ok" | "denied" | "unsupported">("idle");
+  const [activeTags, setActiveTags] = useState<string[]>([]);
+  const [offline, setOffline] = useState(false);
 
   useEffect(() => {
     if (typeof window === "undefined" || !("geolocation" in navigator)) {
@@ -102,18 +105,44 @@ export function LiveMap() {
   }, []);
 
 
-  const { data: boxes = [], isLoading } = useQuery({
+  const { data: allBoxes = [], isLoading } = useQuery({
     queryKey: ["food_boxes"],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from("food_boxes")
-        .select("*")
-        .order("created_at", { ascending: false });
-      if (error) throw error;
-      return data as FoodBox[];
+      try {
+        const { data, error } = await supabase
+          .from("food_boxes")
+          .select("*")
+          .order("created_at", { ascending: false });
+        if (error) throw error;
+        const rows = (data ?? []) as FoodBox[];
+        saveFoodBoxesCache(rows);
+        setOffline(false);
+        return rows;
+      } catch (err) {
+        const cached = readFoodBoxesCache<FoodBox>();
+        if (cached) {
+          setOffline(true);
+          return cached.rows;
+        }
+        throw err;
+      }
     },
     refetchInterval: 15000,
+    retry: 0,
   });
+
+  // Apply food tag filters
+  const boxes = useMemo(() => {
+    if (activeTags.length === 0) return allBoxes;
+    return allBoxes.filter((b) =>
+      activeTags.every((t) => (b.food_tags ?? []).includes(t)),
+    );
+  }, [allBoxes, activeTags]);
+
+  const toggleTag = (tag: string) =>
+    setActiveTags((prev) =>
+      prev.includes(tag) ? prev.filter((x) => x !== tag) : [...prev, tag],
+    );
 
   // Realtime updates
   useEffect(() => {
