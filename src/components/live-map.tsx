@@ -3,6 +3,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "@tanstack/react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { readFoodBoxesCache, saveFoodBoxesCache } from "@/lib/offline-cache";
+import { useI18n } from "@/lib/i18n";
 
 type FoodBox = {
   id: string;
@@ -15,7 +17,19 @@ type FoodBox = {
   pickup_from: string;
   pickup_to: string;
   status: "available" | "reserved" | "picked_up";
+  food_tags?: string[] | null;
 };
+
+const FOOD_TAGS = [
+  "Vegetariano",
+  "Vegano",
+  "Senza glutine",
+  "Halal",
+  "Kosher",
+  "Per bambini",
+  "Caldo",
+  "Da scaldare",
+] as const;
 
 type Registration = {
   nome: string;
