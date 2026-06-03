@@ -4,6 +4,7 @@ import { motion, useInView } from "framer-motion";
 import heroFood from "../assets/hero-food.jpg";
 import { LiveMap } from "@/components/live-map";
 import { ProximityNotifier } from "@/components/proximity-notifier";
+import { useInstallApp, InstallInstructionsModal } from "@/components/install-app";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -482,7 +483,6 @@ function CTA() {
 
 function ComingSoon() {
   const items = [
-    { icon: "🎬", title: "Come funziona in video", desc: "60 secondi senza parole, solo immagini. Supera la barriera linguistica." },
     { icon: "📍", title: "Notifica di prossimità", desc: "Quando sei a 500m da una box disponibile, l'app ti avvisa. Senza questa, metà delle box scadono senza ritiro." },
     { icon: "🌍", title: "Multilingua", desc: "Italiano, inglese, arabo, rumeno, ucraino. Le famiglie che ricevono spesso non parlano italiano." },
     { icon: "📊", title: "Storico personale", desc: "Ogni utente vede quante box ha donato o ricevuto e i kg di cibo salvato." },
@@ -505,8 +505,30 @@ function ComingSoon() {
             inclusivo e capillare.
           </p>
         </AnimatedSection>
+
+        <AnimatedSection className="mb-10">
+          <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-lg shadow-foreground/5">
+            <div className="flex items-center gap-3 border-b border-border px-6 py-4">
+              <span className="text-2xl" aria-hidden>🎬</span>
+              <div>
+                <h3 className="text-lg font-semibold text-foreground">Come funziona in video</h3>
+                <p className="text-sm text-muted-foreground">60 secondi senza parole, solo immagini. Supera la barriera linguistica.</p>
+              </div>
+            </div>
+            <video
+              src="/come-funziona.mp4"
+              className="block aspect-video w-full"
+              autoPlay
+              muted
+              loop
+              playsInline
+              controls
+            />
+          </div>
+        </AnimatedSection>
+
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {items.map((it, i) => (
+          {items.map((it) => (
             <AnimatedSection key={it.title}>
               <div className="h-full rounded-2xl border border-border bg-card p-6">
                 <div className="text-3xl">{it.icon}</div>
@@ -522,6 +544,7 @@ function ComingSoon() {
 }
 
 function DownloadApp() {
+  const install = useInstallApp();
   return (
     <section id="scarica" className="relative overflow-hidden border-t border-border bg-background py-24">
       <div className="absolute -top-32 right-1/4 h-72 w-72 rounded-full bg-terracotta/10 blur-3xl" aria-hidden />
@@ -538,32 +561,40 @@ function DownloadApp() {
             Mappa in tempo reale, notifiche di prossimità, prenotazione in un tap.
             Gratis, senza pubblicità, con dignità.
           </p>
-          <div className="mt-8 flex flex-wrap gap-4">
-            <a
-              href="#"
-              aria-label="Scarica su App Store"
-              className="inline-flex items-center gap-3 rounded-2xl bg-foreground px-6 py-3 text-background transition-all hover:opacity-90"
-            >
-              <span className="text-3xl leading-none" aria-hidden></span>
-              <span className="flex flex-col items-start leading-tight">
-                <span className="text-[10px] uppercase tracking-wider opacity-70">Scarica su</span>
-                <span className="text-lg font-semibold">App Store</span>
-              </span>
-            </a>
-            <a
-              href="#"
-              aria-label="Disponibile su Google Play"
-              className="inline-flex items-center gap-3 rounded-2xl bg-foreground px-6 py-3 text-background transition-all hover:opacity-90"
-            >
-              <span className="text-2xl leading-none" aria-hidden>▶</span>
-              <span className="flex flex-col items-start leading-tight">
-                <span className="text-[10px] uppercase tracking-wider opacity-70">Disponibile su</span>
-                <span className="text-lg font-semibold">Google Play</span>
-              </span>
-            </a>
-          </div>
+          {install.installed ? (
+            <div className="mt-8 inline-flex items-center gap-2 rounded-full border border-sage/40 bg-sage/10 px-5 py-3 text-sm font-semibold text-foreground">
+              ✓ App già installata sul tuo dispositivo
+            </div>
+          ) : (
+            <div className="mt-8 flex flex-wrap gap-4">
+              <button
+                type="button"
+                onClick={() => install.trigger("ios")}
+                aria-label="Installa su iPhone — Aggiungi a schermata Home"
+                className="inline-flex items-center gap-3 rounded-2xl bg-foreground px-6 py-3 text-background transition-all hover:opacity-90"
+              >
+                <span className="text-3xl leading-none" aria-hidden></span>
+                <span className="flex flex-col items-start leading-tight">
+                  <span className="text-[10px] uppercase tracking-wider opacity-70">Installa su</span>
+                  <span className="text-lg font-semibold">iPhone / iPad</span>
+                </span>
+              </button>
+              <button
+                type="button"
+                onClick={() => install.trigger("android")}
+                aria-label="Installa su Android"
+                className="inline-flex items-center gap-3 rounded-2xl bg-foreground px-6 py-3 text-background transition-all hover:opacity-90"
+              >
+                <span className="text-2xl leading-none" aria-hidden>▶</span>
+                <span className="flex flex-col items-start leading-tight">
+                  <span className="text-[10px] uppercase tracking-wider opacity-70">Installa su</span>
+                  <span className="text-lg font-semibold">Android</span>
+                </span>
+              </button>
+            </div>
+          )}
           <p className="mt-6 text-xs text-muted-foreground">
-            Lancio imminente — iscriviti per ricevere il link al momento del rilascio.
+            Funziona come una vera app: aggiungila alla schermata Home in pochi secondi.
           </p>
         </AnimatedSection>
 
@@ -597,6 +628,12 @@ function DownloadApp() {
           </div>
         </AnimatedSection>
       </div>
+
+      <InstallInstructionsModal
+        open={install.open}
+        onClose={() => install.setOpen(false)}
+        platform={install.platform}
+      />
     </section>
   );
 }
