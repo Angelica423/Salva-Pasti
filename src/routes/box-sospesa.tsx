@@ -144,6 +144,7 @@ function BoxSospesa() {
         lat,
         lng,
         food_tags: tags,
+        recurrence: recurrence === "none" ? null : recurrence,
       });
       if (error) throw new Error(error.message);
     },
