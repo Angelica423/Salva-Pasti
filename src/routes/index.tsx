@@ -5,6 +5,7 @@ import heroFood from "../assets/hero-food.jpg";
 import { LiveMap } from "@/components/live-map";
 import { ProximityNotifier } from "@/components/proximity-notifier";
 import { useInstallApp, InstallInstructionsModal } from "@/components/install-app";
+import { LanguageSwitcher } from "@/lib/i18n";
 
 export const Route = createFileRoute("/")({
   component: Index,
