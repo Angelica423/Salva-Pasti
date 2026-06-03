@@ -544,6 +544,7 @@ function ComingSoon() {
 }
 
 function DownloadApp() {
+  const install = useInstallApp();
   return (
     <section id="scarica" className="relative overflow-hidden border-t border-border bg-background py-24">
       <div className="absolute -top-32 right-1/4 h-72 w-72 rounded-full bg-terracotta/10 blur-3xl" aria-hidden />
@@ -560,32 +561,40 @@ function DownloadApp() {
             Mappa in tempo reale, notifiche di prossimità, prenotazione in un tap.
             Gratis, senza pubblicità, con dignità.
           </p>
-          <div className="mt-8 flex flex-wrap gap-4">
-            <a
-              href="#"
-              aria-label="Scarica su App Store"
-              className="inline-flex items-center gap-3 rounded-2xl bg-foreground px-6 py-3 text-background transition-all hover:opacity-90"
-            >
-              <span className="text-3xl leading-none" aria-hidden></span>
-              <span className="flex flex-col items-start leading-tight">
-                <span className="text-[10px] uppercase tracking-wider opacity-70">Scarica su</span>
-                <span className="text-lg font-semibold">App Store</span>
-              </span>
-            </a>
-            <a
-              href="#"
-              aria-label="Disponibile su Google Play"
-              className="inline-flex items-center gap-3 rounded-2xl bg-foreground px-6 py-3 text-background transition-all hover:opacity-90"
-            >
-              <span className="text-2xl leading-none" aria-hidden>▶</span>
-              <span className="flex flex-col items-start leading-tight">
-                <span className="text-[10px] uppercase tracking-wider opacity-70">Disponibile su</span>
-                <span className="text-lg font-semibold">Google Play</span>
-              </span>
-            </a>
-          </div>
+          {install.installed ? (
+            <div className="mt-8 inline-flex items-center gap-2 rounded-full border border-sage/40 bg-sage/10 px-5 py-3 text-sm font-semibold text-foreground">
+              ✓ App già installata sul tuo dispositivo
+            </div>
+          ) : (
+            <div className="mt-8 flex flex-wrap gap-4">
+              <button
+                type="button"
+                onClick={() => install.trigger("ios")}
+                aria-label="Installa su iPhone — Aggiungi a schermata Home"
+                className="inline-flex items-center gap-3 rounded-2xl bg-foreground px-6 py-3 text-background transition-all hover:opacity-90"
+              >
+                <span className="text-3xl leading-none" aria-hidden></span>
+                <span className="flex flex-col items-start leading-tight">
+                  <span className="text-[10px] uppercase tracking-wider opacity-70">Installa su</span>
+                  <span className="text-lg font-semibold">iPhone / iPad</span>
+                </span>
+              </button>
+              <button
+                type="button"
+                onClick={() => install.trigger("android")}
+                aria-label="Installa su Android"
+                className="inline-flex items-center gap-3 rounded-2xl bg-foreground px-6 py-3 text-background transition-all hover:opacity-90"
+              >
+                <span className="text-2xl leading-none" aria-hidden>▶</span>
+                <span className="flex flex-col items-start leading-tight">
+                  <span className="text-[10px] uppercase tracking-wider opacity-70">Installa su</span>
+                  <span className="text-lg font-semibold">Android</span>
+                </span>
+              </button>
+            </div>
+          )}
           <p className="mt-6 text-xs text-muted-foreground">
-            Lancio imminente — iscriviti per ricevere il link al momento del rilascio.
+            Funziona come una vera app: aggiungila alla schermata Home in pochi secondi.
           </p>
         </AnimatedSection>
 
@@ -619,6 +628,12 @@ function DownloadApp() {
           </div>
         </AnimatedSection>
       </div>
+
+      <InstallInstructionsModal
+        open={install.open}
+        onClose={() => install.setOpen(false)}
+        platform={install.platform}
+      />
     </section>
   );
 }
