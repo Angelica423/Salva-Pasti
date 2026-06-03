@@ -83,6 +83,7 @@ function BoxSospesa() {
   const [indirizzo, setIndirizzo] = useState("");
   const [portions, setPortions] = useState(1);
   const [tags, setTags] = useState<string[]>([]);
+  const [recurrence, setRecurrence] = useState<"none" | "weekly" | "monthly">("none");
   const [message, setMessage] = useState("");
   const [success, setSuccess] = useState(false);
   const qc = useQueryClient();
@@ -143,6 +144,7 @@ function BoxSospesa() {
         lat,
         lng,
         food_tags: tags,
+        recurrence: recurrence === "none" ? null : recurrence,
       });
       if (error) throw new Error(error.message);
     },
@@ -444,6 +446,37 @@ function BoxSospesa() {
                     })}
                   </div>
                 </div>
+                <div>
+                  <p className="text-sm font-medium text-foreground">
+                    Donazione ricorrente
+                  </p>
+                  <div className="mt-2 flex flex-wrap gap-2">
+                    {([
+                      ["none", "Una tantum"],
+                      ["weekly", "Ogni settimana"],
+                      ["monthly", "Ogni mese"],
+                    ] as const).map(([k, label]) => (
+                      <button
+                        key={k}
+                        type="button"
+                        onClick={() => setRecurrence(k)}
+                        className={`rounded-full border px-3 py-1.5 text-xs font-medium transition-colors ${
+                          recurrence === k
+                            ? "border-terracotta bg-terracotta/15 text-foreground"
+                            : "border-border bg-background text-muted-foreground hover:border-terracotta/50"
+                        }`}
+                      >
+                        {label}
+                      </button>
+                    ))}
+                  </div>
+                  {recurrence !== "none" && (
+                    <p className="mt-2 text-[11px] text-muted-foreground">
+                      Imposterai una volta sola: la box verrà ricreata automaticamente {recurrence === "weekly" ? "ogni settimana" : "ogni mese"}.
+                    </p>
+                  )}
+                </div>
+
 
                 <div>
                   <label className="text-sm font-medium text-foreground">

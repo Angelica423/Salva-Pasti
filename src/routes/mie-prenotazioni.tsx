@@ -104,7 +104,37 @@ function MieePrenotazioni() {
     enabled: rows.length > 0,
   });
 
+  // Storico personale: anche le donazioni offerte (box sospese a nome dell'utente)
+  const { data: myDonations = [] } = useQuery({
+    queryKey: ["my-donations", reg?.nome],
+    queryFn: async () => {
+      if (!reg?.nome) return [];
+      const { data, error } = await supabase
+        .from("food_boxes")
+        .select("id, portions, status, created_at")
+        .eq("suspended", true)
+        .eq("donor_name", reg.nome);
+      if (error) throw error;
+      return (data ?? []) as { id: string; portions: number; status: string; created_at: string }[];
+    },
+    enabled: !!reg?.nome,
+  });
+
   const boxMap = useMemo(() => new Map(boxes.map((b) => [b.id, b])), [boxes]);
+
+  // Storico stats
+  const stats = useMemo(() => {
+    const pickedUp = rows.filter((r) => r.status === "picked_up");
+    const portionsReceived = pickedUp.reduce((sum, r) => {
+      const box = boxMap.get(r.food_box_id);
+      return sum + (box?.portions ?? 0);
+    }, 0);
+    // Stima: ~0.4 kg di cibo salvato per porzione (media nazionale spreco ristorazione)
+    const kgSaved = (portionsReceived * 0.4).toFixed(1);
+    const donationsCount = myDonations.length;
+    const donatedPortions = myDonations.reduce((s, d) => s + (d.portions ?? 0), 0);
+    return { pickedUpCount: pickedUp.length, portionsReceived, kgSaved, donationsCount, donatedPortions };
+  }, [rows, boxMap, myDonations]);
 
   const filtered = useMemo(() => {
     const now = Date.now();
@@ -169,6 +199,40 @@ function MieePrenotazioni() {
           </div>
         ) : (
           <>
+            {/* Storico personale */}
+            <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-4">
+              <div className="rounded-2xl border border-border bg-card p-5">
+                <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                  Box ritirate
+                </p>
+                <p className="mt-2 text-3xl font-bold text-foreground">{stats.pickedUpCount}</p>
+              </div>
+              <div className="rounded-2xl border border-border bg-card p-5">
+                <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                  Porzioni salvate
+                </p>
+                <p className="mt-2 text-3xl font-bold text-foreground">{stats.portionsReceived}</p>
+              </div>
+              <div className="rounded-2xl border border-sage/30 bg-sage/10 p-5">
+                <p className="text-xs font-medium uppercase tracking-wider text-sage">
+                  Kg di cibo salvato
+                </p>
+                <p className="mt-2 text-3xl font-bold text-foreground">{stats.kgSaved}</p>
+                <p className="mt-1 text-[10px] text-muted-foreground">stima (~0,4 kg/porzione)</p>
+              </div>
+              <div className="rounded-2xl border border-terracotta/30 bg-terracotta/5 p-5">
+                <p className="text-xs font-medium uppercase tracking-wider text-terracotta">
+                  Box sospese offerte
+                </p>
+                <p className="mt-2 text-3xl font-bold text-foreground">{stats.donationsCount}</p>
+                {stats.donatedPortions > 0 && (
+                  <p className="mt-1 text-[10px] text-muted-foreground">
+                    {stats.donatedPortions} porzioni donate
+                  </p>
+                )}
+              </div>
+            </div>
+
             <div className="mt-8 flex flex-wrap gap-3">
               <div className="flex gap-1 rounded-full border border-border bg-card p-1">
                 {(["all", "confirmed", "picked_up", "cancelled"] as const).map((s) => (

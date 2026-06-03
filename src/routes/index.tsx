@@ -5,6 +5,7 @@ import heroFood from "../assets/hero-food.jpg";
 import { LiveMap } from "@/components/live-map";
 import { ProximityNotifier } from "@/components/proximity-notifier";
 import { useInstallApp, InstallInstructionsModal } from "@/components/install-app";
+import { LanguageSwitcher } from "@/lib/i18n";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -67,6 +68,8 @@ function Navbar() {
           <Link to="/registrati" className="inline-flex items-center justify-center rounded-full bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground transition-all hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/20">
             Unisciti a noi
           </Link>
+          <LanguageSwitcher />
+
 
         </div>
       </div>
@@ -483,12 +486,10 @@ function CTA() {
 
 function ComingSoon() {
   const items = [
-    { icon: "📍", title: "Notifica di prossimità", desc: "Quando sei a 500m da una box disponibile, l'app ti avvisa. Senza questa, metà delle box scadono senza ritiro." },
-    { icon: "🌍", title: "Multilingua", desc: "Italiano, inglese, arabo, rumeno, ucraino. Le famiglie che ricevono spesso non parlano italiano." },
-    { icon: "📊", title: "Storico personale", desc: "Ogni utente vede quante box ha donato o ricevuto e i kg di cibo salvato." },
-    { icon: "🗓️", title: "Donazioni ricorrenti", desc: "Il fornaio che dona ogni venerdì lo imposta una volta sola." },
-    { icon: "🥗", title: "Filtri alimentari", desc: "Vegetariano, senza glutine, halal, kosher. Per ricevere solo cibo adatto." },
-    { icon: "📡", title: "Modalità offline", desc: "Mostra le ultime box disponibili anche senza connessione." },
+    { icon: "🎟️", title: "Tessera digitale anonima", desc: "QR personale per i beneficiari delle associazioni partner. Ritiro rapido, zero documenti." },
+    { icon: "🚲", title: "Rete volontari rider", desc: "Coordinamento volontari per consegna a domicilio a chi non può muoversi." },
+    { icon: "🏪", title: "Marketplace partner", desc: "Catalogo dei locali aderenti con offerte ricorrenti, filtri per zona e categoria." },
+    { icon: "📈", title: "Report fiscali automatici", desc: "Generazione automatica del report mensile per il commercialista (Legge Gadda)." },
   ];
   return (
     <section className="bg-muted/30 py-24">

@@ -3,6 +3,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "@tanstack/react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { readFoodBoxesCache, saveFoodBoxesCache } from "@/lib/offline-cache";
+import { useI18n } from "@/lib/i18n";
 
 type FoodBox = {
   id: string;
@@ -15,7 +17,19 @@ type FoodBox = {
   pickup_from: string;
   pickup_to: string;
   status: "available" | "reserved" | "picked_up";
+  food_tags?: string[] | null;
 };
+
+const FOOD_TAGS = [
+  "Vegetariano",
+  "Vegano",
+  "Senza glutine",
+  "Halal",
+  "Kosher",
+  "Per bambini",
+  "Caldo",
+  "Da scaldare",
+] as const;
 
 type Registration = {
   nome: string;
@@ -65,10 +79,13 @@ function formatDistance(m: number) {
 export function LiveMap() {
   const qc = useQueryClient();
   const registration = useRegistration();
+  const { t } = useI18n();
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [confirmation, setConfirmation] = useState<{ box: FoodBox } | null>(null);
   const [userPos, setUserPos] = useState<{ lat: number; lng: number } | null>(null);
   const [geoStatus, setGeoStatus] = useState<"idle" | "loading" | "ok" | "denied" | "unsupported">("idle");
+  const [activeTags, setActiveTags] = useState<string[]>([]);
+  const [offline, setOffline] = useState(false);
 
   useEffect(() => {
     if (typeof window === "undefined" || !("geolocation" in navigator)) {
@@ -88,18 +105,44 @@ export function LiveMap() {
   }, []);
 
 
-  const { data: boxes = [], isLoading } = useQuery({
+  const { data: allBoxes = [], isLoading } = useQuery({
     queryKey: ["food_boxes"],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from("food_boxes")
-        .select("*")
-        .order("created_at", { ascending: false });
-      if (error) throw error;
-      return data as FoodBox[];
+      try {
+        const { data, error } = await supabase
+          .from("food_boxes")
+          .select("*")
+          .order("created_at", { ascending: false });
+        if (error) throw error;
+        const rows = (data ?? []) as FoodBox[];
+        saveFoodBoxesCache(rows);
+        setOffline(false);
+        return rows;
+      } catch (err) {
+        const cached = readFoodBoxesCache<FoodBox>();
+        if (cached) {
+          setOffline(true);
+          return cached.rows;
+        }
+        throw err;
+      }
     },
     refetchInterval: 15000,
+    retry: 0,
   });
+
+  // Apply food tag filters
+  const boxes = useMemo(() => {
+    if (activeTags.length === 0) return allBoxes;
+    return allBoxes.filter((b) =>
+      activeTags.every((t) => (b.food_tags ?? []).includes(t)),
+    );
+  }, [allBoxes, activeTags]);
+
+  const toggleTag = (tag: string) =>
+    setActiveTags((prev) =>
+      prev.includes(tag) ? prev.filter((x) => x !== tag) : [...prev, tag],
+    );
 
   // Realtime updates
   useEffect(() => {
@@ -188,9 +231,10 @@ export function LiveMap() {
   return (
     <section id="mappa" className="bg-background py-24">
       <div className="mx-auto max-w-6xl px-6">
-        <div className="mb-12 text-center">
-          <p className="mb-3 text-sm font-medium uppercase tracking-widest text-muted-foreground">
-            In tempo reale
+        <div className="mb-8 text-center">
+          <p className="mb-3 inline-flex items-center gap-2 text-sm font-medium uppercase tracking-widest text-muted-foreground">
+            {offline && <span className="inline-block h-2 w-2 rounded-full bg-amber-500" aria-hidden />}
+            {offline ? t("common.offline") : t("common.online")}
           </p>
           <h2 className="text-balance text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
             La <em className="font-serif italic text-terracotta">mappa</em> del cibo salvato.
@@ -199,6 +243,48 @@ export function LiveMap() {
             Box di cibo disponibili nel tuo quartiere, aggiornati al secondo. Le
             associazioni e i volontari registrati possono prenotare con un tocco.
           </p>
+        </div>
+
+        {/* Food tag filters */}
+        <div className="mb-6 rounded-2xl border border-border bg-card p-4">
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+              {t("filters.title")}
+            </p>
+            {activeTags.length > 0 && (
+              <button
+                onClick={() => setActiveTags([])}
+                className="text-xs font-medium text-terracotta hover:underline"
+              >
+                {t("filters.clear")} ({activeTags.length})
+              </button>
+            )}
+          </div>
+          <div className="mt-3 flex flex-wrap gap-2">
+            {FOOD_TAGS.map((tag) => {
+              const active = activeTags.includes(tag);
+              return (
+                <button
+                  key={tag}
+                  type="button"
+                  onClick={() => toggleTag(tag)}
+                  className={`rounded-full border px-3 py-1.5 text-xs font-medium transition-colors ${
+                    active
+                      ? "border-sage bg-sage/15 text-foreground"
+                      : "border-border bg-background text-muted-foreground hover:border-sage/50"
+                  }`}
+                >
+                  {active ? "✓ " : ""}
+                  {tag}
+                </button>
+              );
+            })}
+          </div>
+          {activeTags.length > 0 && boxes.length === 0 && allBoxes.length > 0 && (
+            <p className="mt-3 text-xs text-muted-foreground">
+              Nessun box con questi filtri. Prova a rimuoverne qualcuno.
+            </p>
+          )}
         </div>
 
         <div className="grid gap-6 lg:grid-cols-[1.6fr_1fr]">
