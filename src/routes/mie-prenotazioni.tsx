@@ -104,7 +104,37 @@ function MieePrenotazioni() {
     enabled: rows.length > 0,
   });
 
+  // Storico personale: anche le donazioni offerte (box sospese a nome dell'utente)
+  const { data: myDonations = [] } = useQuery({
+    queryKey: ["my-donations", reg?.nome],
+    queryFn: async () => {
+      if (!reg?.nome) return [];
+      const { data, error } = await supabase
+        .from("food_boxes")
+        .select("id, portions, status, created_at")
+        .eq("suspended", true)
+        .eq("donor_name", reg.nome);
+      if (error) throw error;
+      return (data ?? []) as { id: string; portions: number; status: string; created_at: string }[];
+    },
+    enabled: !!reg?.nome,
+  });
+
   const boxMap = useMemo(() => new Map(boxes.map((b) => [b.id, b])), [boxes]);
+
+  // Storico stats
+  const stats = useMemo(() => {
+    const pickedUp = rows.filter((r) => r.status === "picked_up");
+    const portionsReceived = pickedUp.reduce((sum, r) => {
+      const box = boxMap.get(r.food_box_id);
+      return sum + (box?.portions ?? 0);
+    }, 0);
+    // Stima: ~0.4 kg di cibo salvato per porzione (media nazionale spreco ristorazione)
+    const kgSaved = (portionsReceived * 0.4).toFixed(1);
+    const donationsCount = myDonations.length;
+    const donatedPortions = myDonations.reduce((s, d) => s + (d.portions ?? 0), 0);
+    return { pickedUpCount: pickedUp.length, portionsReceived, kgSaved, donationsCount, donatedPortions };
+  }, [rows, boxMap, myDonations]);
 
   const filtered = useMemo(() => {
     const now = Date.now();
