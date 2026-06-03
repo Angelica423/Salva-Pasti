@@ -83,6 +83,7 @@ function BoxSospesa() {
   const [indirizzo, setIndirizzo] = useState("");
   const [portions, setPortions] = useState(1);
   const [tags, setTags] = useState<string[]>([]);
+  const [recurrence, setRecurrence] = useState<"none" | "weekly" | "monthly">("none");
   const [message, setMessage] = useState("");
   const [success, setSuccess] = useState(false);
   const qc = useQueryClient();
