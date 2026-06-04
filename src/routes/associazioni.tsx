@@ -313,3 +313,191 @@ function Associazioni() {
     </div>
   );
 }
+
+function PartnerApplicationForm() {
+  const [form, setForm] = useState({
+    org_name: "",
+    contact_name: "",
+    email: "",
+    phone: "",
+    city: "",
+    org_type: "associazione",
+    beneficiaries: "",
+    message: "",
+  });
+  const [status, setStatus] = useState<"idle" | "sending" | "ok" | "error">("idle");
+  const [error, setError] = useState<string | null>(null);
+
+  const submit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setStatus("sending");
+    setError(null);
+    const { error } = await supabase.from("partner_applications").insert({
+      org_name: form.org_name,
+      contact_name: form.contact_name,
+      email: form.email,
+      phone: form.phone || null,
+      city: form.city,
+      org_type: form.org_type,
+      beneficiaries: form.beneficiaries ? parseInt(form.beneficiaries) : null,
+      message: form.message || null,
+    });
+    if (error) {
+      setError(error.message);
+      setStatus("error");
+      return;
+    }
+    setStatus("ok");
+    setForm({
+      org_name: "",
+      contact_name: "",
+      email: "",
+      phone: "",
+      city: "",
+      org_type: "associazione",
+      beneficiaries: "",
+      message: "",
+    });
+  };
+
+  const upd = (k: keyof typeof form) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) =>
+    setForm((f) => ({ ...f, [k]: e.target.value }));
+
+  return (
+    <section id="diventa-partner" className="mt-20 scroll-mt-24">
+      <div className="rounded-3xl border border-border bg-card p-8 sm:p-12">
+        <div className="max-w-2xl">
+          <span className="inline-block rounded-full bg-sage/15 px-3 py-1 text-xs font-medium uppercase tracking-wide text-sage">
+            Diventa partner
+          </span>
+          <h2 className="mt-4 text-balance text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+            Porta <em className="font-serif italic text-terracotta">Salvapasti</em> nella tua organizzazione
+          </h2>
+          <p className="mt-3 text-muted-foreground">
+            Associazioni, parrocchie, mense sociali, gruppi di volontariato: candidatevi
+            come partner ufficiali per ricevere accesso prioritario alle box, formazione
+            dedicata e materiali di comunicazione.
+          </p>
+        </div>
+
+        {status === "ok" ? (
+          <div className="mt-8 rounded-2xl border border-sage/30 bg-sage/10 p-6">
+            <p className="font-semibold text-foreground">Candidatura ricevuta ✓</p>
+            <p className="mt-1 text-sm text-muted-foreground">
+              Vi contatteremo entro 5 giorni lavorativi all'indirizzo indicato.
+            </p>
+            <button
+              onClick={() => setStatus("idle")}
+              className="mt-4 text-sm font-medium text-foreground underline"
+            >
+              Invia un'altra candidatura
+            </button>
+          </div>
+        ) : (
+          <form onSubmit={submit} className="mt-8 grid gap-4 sm:grid-cols-2">
+            <label className="text-sm">
+              <span className="mb-1 block font-medium text-foreground">Nome organizzazione *</span>
+              <input
+                required
+                value={form.org_name}
+                onChange={upd("org_name")}
+                className="w-full rounded-lg border border-input bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+              />
+            </label>
+            <label className="text-sm">
+              <span className="mb-1 block font-medium text-foreground">Tipo *</span>
+              <select
+                required
+                value={form.org_type}
+                onChange={upd("org_type")}
+                className="w-full rounded-lg border border-input bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+              >
+                <option value="associazione">Associazione / ONLUS</option>
+                <option value="parrocchia">Parrocchia</option>
+                <option value="mensa">Mensa sociale</option>
+                <option value="volontariato">Gruppo di volontariato</option>
+                <option value="altro">Altro</option>
+              </select>
+            </label>
+            <label className="text-sm">
+              <span className="mb-1 block font-medium text-foreground">Referente *</span>
+              <input
+                required
+                value={form.contact_name}
+                onChange={upd("contact_name")}
+                className="w-full rounded-lg border border-input bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+              />
+            </label>
+            <label className="text-sm">
+              <span className="mb-1 block font-medium text-foreground">Email *</span>
+              <input
+                required
+                type="email"
+                value={form.email}
+                onChange={upd("email")}
+                className="w-full rounded-lg border border-input bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+              />
+            </label>
+            <label className="text-sm">
+              <span className="mb-1 block font-medium text-foreground">Telefono</span>
+              <input
+                type="tel"
+                value={form.phone}
+                onChange={upd("phone")}
+                className="w-full rounded-lg border border-input bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+              />
+            </label>
+            <label className="text-sm">
+              <span className="mb-1 block font-medium text-foreground">Città *</span>
+              <input
+                required
+                value={form.city}
+                onChange={upd("city")}
+                className="w-full rounded-lg border border-input bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+              />
+            </label>
+            <label className="text-sm sm:col-span-2">
+              <span className="mb-1 block font-medium text-foreground">
+                Persone assistite a settimana
+              </span>
+              <input
+                type="number"
+                min="0"
+                value={form.beneficiaries}
+                onChange={upd("beneficiaries")}
+                className="w-full rounded-lg border border-input bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+              />
+            </label>
+            <label className="text-sm sm:col-span-2">
+              <span className="mb-1 block font-medium text-foreground">
+                Raccontaci la vostra attività
+              </span>
+              <textarea
+                rows={4}
+                value={form.message}
+                onChange={upd("message")}
+                className="w-full rounded-lg border border-input bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+              />
+            </label>
+            {error && (
+              <p className="sm:col-span-2 text-sm text-destructive">{error}</p>
+            )}
+            <div className="sm:col-span-2 flex items-center justify-between gap-4">
+              <p className="text-xs text-muted-foreground">
+                Inviando accetti la <Link to="/privacy" className="underline">privacy policy</Link>.
+              </p>
+              <button
+                type="submit"
+                disabled={status === "sending"}
+                className="rounded-full bg-primary px-6 py-2.5 text-sm font-semibold text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
+              >
+                {status === "sending" ? "Invio…" : "Invia candidatura"}
+              </button>
+            </div>
+          </form>
+        )}
+      </div>
+    </section>
+  );
+}
+
