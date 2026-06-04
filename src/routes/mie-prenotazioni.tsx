@@ -75,9 +75,6 @@ function MieePrenotazioni() {
   const [reg, setReg] = useState<Registration | null>(null);
   const [statusFilter, setStatusFilter] = useState<"all" | ReservationRow["status"]>("all");
   const [timeFilter, setTimeFilter] = useState<"all" | "upcoming" | "past">("all");
-
-  const [statusFilter, setStatusFilter] = useState<"all" | ReservationRow["status"]>("all");
-  const [timeFilter, setTimeFilter] = useState<"all" | "upcoming" | "past">("all");
   const [pickupTarget, setPickupTarget] = useState<ReservationRow | null>(null);
   const [waiverAccepted, setWaiverAccepted] = useState(false);
 
