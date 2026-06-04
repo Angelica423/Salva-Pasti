@@ -68,6 +68,48 @@ export type Database = {
         }
         Relationships: []
       }
+      partner_applications: {
+        Row: {
+          beneficiaries: number | null
+          city: string
+          contact_name: string
+          created_at: string
+          email: string
+          id: string
+          message: string | null
+          org_name: string
+          org_type: string
+          phone: string | null
+          status: string
+        }
+        Insert: {
+          beneficiaries?: number | null
+          city: string
+          contact_name: string
+          created_at?: string
+          email: string
+          id?: string
+          message?: string | null
+          org_name: string
+          org_type: string
+          phone?: string | null
+          status?: string
+        }
+        Update: {
+          beneficiaries?: number | null
+          city?: string
+          contact_name?: string
+          created_at?: string
+          email?: string
+          id?: string
+          message?: string | null
+          org_name?: string
+          org_type?: string
+          phone?: string | null
+          status?: string
+        }
+        Relationships: []
+      }
       reservations: {
         Row: {
           created_at: string
