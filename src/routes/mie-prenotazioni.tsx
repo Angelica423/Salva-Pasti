@@ -3,6 +3,15 @@ import { useEffect, useMemo, useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { motion } from "framer-motion";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "@/components/ui/dialog";
+import { downloadLiberatoria } from "@/lib/liberatoria-pdf";
 
 export const Route = createFileRoute("/mie-prenotazioni")({
   component: MieePrenotazioni,
