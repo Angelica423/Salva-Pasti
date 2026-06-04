@@ -267,7 +267,10 @@ function Associazioni() {
             </div>
           </>
         )}
+
+        <PartnerApplicationForm />
       </div>
+
 
       {/* Confirmation */}
       {confirmed && (
