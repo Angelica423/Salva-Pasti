@@ -392,6 +392,116 @@ function MieePrenotazioni() {
           </>
         )}
       </div>
+
+      <Dialog
+        open={!!pickupTarget}
+        onOpenChange={(o) => {
+          if (!o) {
+            setPickupTarget(null);
+            setWaiverAccepted(false);
+          }
+        }}
+      >
+        <DialogContent className="max-w-lg">
+          <DialogHeader>
+            <DialogTitle>Liberatoria digitale al ritiro</DialogTitle>
+            <DialogDescription>
+              Conferma il ritiro e scarica automaticamente la liberatoria in PDF
+              ai sensi della Legge 166/2016 (Legge Gadda).
+            </DialogDescription>
+          </DialogHeader>
+
+          {pickupTarget && (() => {
+            const box = boxMap.get(pickupTarget.food_box_id);
+            return (
+              <div className="space-y-4">
+                <div className="rounded-xl border border-border bg-muted/30 p-4 text-sm">
+                  <p className="font-semibold text-foreground">
+                    {box?.restaurant_name ?? "Box"}
+                  </p>
+                  {box && (
+                    <p className="mt-1 text-muted-foreground">
+                      {box.portions} porzioni · codice{" "}
+                      <span className="font-mono">{pickupTarget.pickup_code}</span>
+                    </p>
+                  )}
+                </div>
+
+                <div className="max-h-48 overflow-y-auto rounded-xl border border-border bg-background p-4 text-xs leading-relaxed text-muted-foreground">
+                  <p>
+                    Il/La sottoscritto/a dichiara di ritirare a titolo gratuito le
+                    eccedenze alimentari indicate, di averne verificato l'integrità
+                    apparente al momento del ritiro e di assumersi ogni responsabilità
+                    per la successiva conservazione, trasporto e distribuzione.
+                  </p>
+                  <p className="mt-2">
+                    Solleva il donatore e la piattaforma Salvapasti da qualunque
+                    responsabilità civile e penale derivante dall'uso dei prodotti
+                    successivo al ritiro. Acconsente al trattamento dei dati
+                    personali per le sole finalità di tracciamento del ritiro
+                    (Reg. UE 2016/679 — GDPR).
+                  </p>
+                </div>
+
+                <label className="flex items-start gap-3 rounded-xl border border-border p-3 text-sm">
+                  <input
+                    type="checkbox"
+                    checked={waiverAccepted}
+                    onChange={(e) => setWaiverAccepted(e.target.checked)}
+                    className="mt-0.5 h-4 w-4 accent-primary"
+                  />
+                  <span className="text-foreground">
+                    Ho letto e accetto la liberatoria. Confermo il ritiro.
+                  </span>
+                </label>
+              </div>
+            );
+          })()}
+
+          <DialogFooter>
+            <button
+              onClick={() => setPickupTarget(null)}
+              className="rounded-full border border-border px-4 py-2 text-sm font-medium text-foreground hover:bg-muted"
+            >
+              Annulla
+            </button>
+            <button
+              disabled={!waiverAccepted || updateMutation.isPending || !pickupTarget}
+              onClick={async () => {
+                if (!pickupTarget || !reg) return;
+                const box = boxMap.get(pickupTarget.food_box_id);
+                try {
+                  await updateMutation.mutateAsync({
+                    reservation: pickupTarget,
+                    next: "picked_up",
+                  });
+                  downloadLiberatoria({
+                    reserverName: reg.nome,
+                    reserverEmail: reg.email,
+                    reserverRole: reg.ruolo,
+                    restaurantName: box?.restaurant_name ?? "—",
+                    address: box?.address ?? "—",
+                    portions: box?.portions ?? 0,
+                    pickupCode:
+                      pickupTarget.pickup_code ??
+                      pickupTarget.id.slice(0, 8).toUpperCase(),
+                    pickupFrom: box?.pickup_from ?? new Date().toISOString(),
+                    pickupTo: box?.pickup_to ?? new Date().toISOString(),
+                    foodTags: box?.food_tags,
+                  });
+                  setPickupTarget(null);
+                  setWaiverAccepted(false);
+                } catch (e) {
+                  alert((e as Error).message);
+                }
+              }}
+              className="rounded-full bg-primary px-5 py-2 text-sm font-semibold text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
+            >
+              {updateMutation.isPending ? "Conferma…" : "Conferma e scarica PDF"}
+            </button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
