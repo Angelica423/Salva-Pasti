@@ -78,7 +78,7 @@ function Navbar() {
 
 function Hero() {
   return (
-    <section className="relative flex min-h-[90vh] items-center justify-center overflow-hidden">
+    <section className="relative flex min-h-[90vh] items-center justify-center overflow-hidden pt-24">
       <div className="absolute inset-0">
         <img src={heroFood} alt="Tavola italiana ricca di cibo fresco" className="h-full w-full object-cover" />
         <div className="absolute inset-0" style={{ backgroundColor: "var(--hero-overlay)" }} />
