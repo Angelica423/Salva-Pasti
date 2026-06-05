@@ -640,6 +640,49 @@ function DownloadApp() {
 }
 
 
+function Partners() {
+  const partners = [
+    { name: "Caritas Italiana", role: "Distribuzione alimentare" },
+    { name: "Banco Alimentare", role: "Raccolta e recupero cibo" },
+    { name: "Pane Quotidiano", role: "Mense e comunità" },
+    { name: "Assocuore", role: "Rete volontariato" },
+    { name: "Slow Food", role: "Sostenibilità alimentare" },
+    { name: "Confcommercio", role: "Rete ristoratori" },
+  ];
+
+  return (
+    <section className="border-t border-border bg-muted/30 py-24">
+      <div className="mx-auto max-w-6xl px-6">
+        <AnimatedSection className="mb-14 text-center">
+          <p className="mb-3 text-sm font-medium uppercase tracking-widest text-muted-foreground">
+            Chi ci sostiene
+          </p>
+          <h2 className="text-balance text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
+            I nostri <em className="font-serif italic text-terracotta">partner</em>.
+          </h2>
+          <p className="mx-auto mt-5 max-w-2xl text-lg text-muted-foreground">
+            Aziende e organizzazioni che credono nel progetto e ci aiutano a tenerlo gratuito per tutti.
+          </p>
+        </AnimatedSection>
+
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {partners.map((p, i) => (
+            <AnimatedSection key={i}>
+              <div className="flex h-full flex-col items-center justify-center rounded-2xl border border-border bg-card p-8 text-center transition-all hover:border-terracotta/30 hover:shadow-lg hover:shadow-terracotta/5">
+                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-muted text-2xl font-bold text-muted-foreground">
+                  {p.name.charAt(0)}
+                </div>
+                <h3 className="mt-5 text-lg font-semibold text-foreground">{p.name}</h3>
+                <p className="mt-1 text-sm text-muted-foreground">{p.role}</p>
+              </div>
+            </AnimatedSection>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function Footer() {
   return (
     <footer id="contatti" className="border-t border-border bg-background py-16">
@@ -703,7 +746,7 @@ function Index() {
         <RateApp />
         <DownloadApp />
         <CTA />
-
+        <Partners />
       </main>
       <Footer />
       <ProximityNotifier />
