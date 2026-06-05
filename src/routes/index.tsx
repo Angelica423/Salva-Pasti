@@ -641,13 +641,43 @@ function DownloadApp() {
 
 
 function Partners() {
-  const partners = [
-    { name: "Caritas Italiana", role: "Distribuzione alimentare" },
-    { name: "Banco Alimentare", role: "Raccolta e recupero cibo" },
-    { name: "Pane Quotidiano", role: "Mense e comunità" },
-    { name: "Assocuore", role: "Rete volontariato" },
-    { name: "Slow Food", role: "Sostenibilità alimentare" },
-    { name: "Confcommercio", role: "Rete ristoratori" },
+  const categories = [
+    {
+      label: "Associazioni",
+      items: [
+        { name: "Caritas Italiana", role: "Distribuzione alimentare" },
+        { name: "Banco Alimentare", role: "Raccolta e recupero cibo" },
+        { name: "Pane Quotidiano", role: "Mense e comunità" },
+        { name: "Assocuore", role: "Rete volontariato" },
+      ],
+    },
+    {
+      label: "Attività commerciali",
+      items: [
+        { name: "Trattoria Da Lucia", role: "Ristorante partner" },
+        { name: "Panetteria Sole", role: "Forno aderente" },
+        { name: "Gelateria Centrale", role: "Gelateria sostenibile" },
+        { name: "Supermercati Eco", role: "Retail anti-spreco" },
+      ],
+    },
+    {
+      label: "Comuni",
+      items: [
+        { name: "Comune di Milano", role: "Sostegno progetto" },
+        { name: "Comune di Roma", role: "Patrocinio" },
+        { name: "Comune di Napoli", role: "Rete solidale" },
+        { name: "Comune di Torino", role: "Collaborazione" },
+      ],
+    },
+    {
+      label: "Aziende",
+      items: [
+        { name: "Slow Food", role: "Sostenibilità alimentare" },
+        { name: "Confcommercio", role: "Rete ristoratori" },
+        { name: "Barilla", role: "Sostegno alimentare" },
+        { name: "Esselunga", role: "Donazioni retail" },
+      ],
+    },
   ];
 
   return (
@@ -661,23 +691,32 @@ function Partners() {
             I nostri <em className="font-serif italic text-terracotta">partner</em>.
           </h2>
           <p className="mx-auto mt-5 max-w-2xl text-lg text-muted-foreground">
-            Aziende e organizzazioni che credono nel progetto e ci aiutano a tenerlo gratuito per tutti.
+            Aziende, attività commerciali, Comuni e organizzazioni che credono nel progetto e ci aiutano a tenerlo gratuito per tutti.
           </p>
         </AnimatedSection>
 
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {partners.map((p, i) => (
-            <AnimatedSection key={i}>
-              <div className="flex h-full flex-col items-center justify-center rounded-2xl border border-border bg-card p-8 text-center transition-all hover:border-terracotta/30 hover:shadow-lg hover:shadow-terracotta/5">
-                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-muted text-2xl font-bold text-muted-foreground">
-                  {p.name.charAt(0)}
-                </div>
-                <h3 className="mt-5 text-lg font-semibold text-foreground">{p.name}</h3>
-                <p className="mt-1 text-sm text-muted-foreground">{p.role}</p>
-              </div>
+        {categories.map((cat, ci) => (
+          <div key={ci} className={ci > 0 ? "mt-14" : ""}>
+            <AnimatedSection>
+              <h3 className="mb-6 text-center text-xl font-semibold tracking-tight text-foreground">
+                {cat.label}
+              </h3>
             </AnimatedSection>
-          ))}
-        </div>
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+              {cat.items.map((p, i) => (
+                <AnimatedSection key={i}>
+                  <div className="flex h-full flex-col items-center justify-center rounded-2xl border border-border bg-card p-6 text-center transition-all hover:border-terracotta/30 hover:shadow-lg hover:shadow-terracotta/5">
+                    <div className="flex h-14 w-14 items-center justify-center rounded-full bg-muted text-xl font-bold text-muted-foreground">
+                      {p.name.charAt(0)}
+                    </div>
+                    <h4 className="mt-4 text-base font-semibold text-foreground">{p.name}</h4>
+                    <p className="mt-1 text-sm text-muted-foreground">{p.role}</p>
+                  </div>
+                </AnimatedSection>
+              ))}
+            </div>
+          </div>
+        ))}
       </div>
     </section>
   );
