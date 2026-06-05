@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import heroFood from "../assets/hero-food.jpg";
+import logoAsset from "@/assets/salva-pasti-logo.png.asset.json";
 import { LiveMap } from "@/components/live-map";
 import { ProximityNotifier } from "@/components/proximity-notifier";
 import { useInstallApp, InstallInstructionsModal } from "@/components/install-app";
@@ -39,9 +40,7 @@ function Navbar() {
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border/50">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
         <Link to="/" className="flex items-center gap-2">
-          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-primary-foreground">
-            <span className="text-sm font-bold">SP</span>
-          </div>
+          <img src={logoAsset.url} alt="Salva Pasti" className="h-10 w-10 object-contain" />
           <span className="text-lg font-semibold tracking-tight text-foreground">
             Salva Pasti
           </span>
@@ -729,9 +728,7 @@ function Footer() {
         <div className="grid gap-12 md:grid-cols-3">
           <div>
             <div className="flex items-center gap-2">
-              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-primary-foreground">
-                <span className="text-sm font-bold">SP</span>
-              </div>
+              <img src={logoAsset.url} alt="Salva Pasti" className="h-10 w-10 object-contain" />
               <span className="text-lg font-semibold tracking-tight text-foreground">Salva Pasti</span>
             </div>
             <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
