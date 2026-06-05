@@ -746,7 +746,7 @@ function Index() {
         <RateApp />
         <DownloadApp />
         <CTA />
-
+        <Partners />
       </main>
       <Footer />
       <ProximityNotifier />
