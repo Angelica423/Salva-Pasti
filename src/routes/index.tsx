@@ -36,42 +36,67 @@ function AnimatedSection({
 }
 
 function Navbar() {
+  const [open, setOpen] = useState(false);
+  const linkCls = "text-sm font-medium text-muted-foreground transition-colors hover:text-foreground";
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border/50">
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-        <Link to="/" className="flex items-center gap-3">
-          <img src={logoAsset.url} alt="Salva Pasti" className="max-w-[120px] mr-4 h-10 w-10 object-contain" />
-          <span className="text-lg font-semibold tracking-tight text-foreground">
+      <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
+        <Link to="/" className="flex items-center gap-2 shrink-0" onClick={() => setOpen(false)}>
+          <img src={logoAsset.url} alt="Salva Pasti" className="h-9 w-9 object-contain" />
+          <span className="text-base font-semibold tracking-tight text-foreground sm:text-lg">
             Salva Pasti
           </span>
         </Link>
-        <div className="hidden items-center gap-6 md:flex">
-          <a href="#come-funziona" className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">
-            Come funziona
-          </a>
-          <a href="#mappa" className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">
-            Mappa
-          </a>
-          <Link to="/associazioni" className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">
-            Associazioni
-          </Link>
-          <Link to="/box-sospesa" className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">
-            Box sospesa
-          </Link>
-          <Link to="/mie-prenotazioni" className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">
-            Le mie prenotazioni
-          </Link>
-          <a href="#scarica" className="inline-flex items-center justify-center gap-2 rounded-full border border-foreground/20 px-4 py-2 text-sm font-medium text-foreground transition-all hover:border-foreground/40 hover:bg-foreground/5">
-            <span aria-hidden>⬇</span> Scarica l'app
-          </a>
-          <Link to="/registrati" className="inline-flex items-center justify-center rounded-full bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground transition-all hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/20">
+
+        {/* Desktop nav */}
+        <div className="hidden items-center gap-5 lg:flex">
+          <a href="#come-funziona" className={linkCls}>Come funziona</a>
+          <a href="#mappa" className={linkCls}>Mappa</a>
+          <Link to="/associazioni" className={linkCls}>Associazioni</Link>
+          <Link to="/box-sospesa" className={linkCls}>Box sospesa</Link>
+          <Link to="/mie-prenotazioni" className={linkCls}>Le mie prenotazioni</Link>
+          <Link to="/registrati" className="inline-flex items-center justify-center rounded-full bg-primary px-5 py-2 text-sm font-medium text-primary-foreground transition-all hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/20">
             Unisciti a noi
           </Link>
           <LanguageSwitcher />
+        </div>
 
-
+        {/* Mobile/tablet trigger */}
+        <div className="flex items-center gap-2 lg:hidden">
+          <LanguageSwitcher />
+          <button
+            type="button"
+            aria-label={open ? "Chiudi menu" : "Apri menu"}
+            aria-expanded={open}
+            onClick={() => setOpen((v) => !v)}
+            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border/60 text-foreground transition-colors hover:bg-foreground/5"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+              {open ? (
+                <><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></>
+              ) : (
+                <><line x1="3" y1="6" x2="21" y2="6" /><line x1="3" y1="12" x2="21" y2="12" /><line x1="3" y1="18" x2="21" y2="18" /></>
+              )}
+            </svg>
+          </button>
         </div>
       </div>
+
+      {/* Mobile panel */}
+      {open && (
+        <div className="lg:hidden border-t border-border/50 bg-background/95 backdrop-blur-md">
+          <div className="mx-auto flex max-w-6xl flex-col gap-1 px-4 py-3 sm:px-6">
+            <a href="#come-funziona" onClick={() => setOpen(false)} className="rounded-md px-3 py-2 text-sm font-medium text-foreground/80 hover:bg-foreground/5">Come funziona</a>
+            <a href="#mappa" onClick={() => setOpen(false)} className="rounded-md px-3 py-2 text-sm font-medium text-foreground/80 hover:bg-foreground/5">Mappa</a>
+            <Link to="/associazioni" onClick={() => setOpen(false)} className="rounded-md px-3 py-2 text-sm font-medium text-foreground/80 hover:bg-foreground/5">Associazioni</Link>
+            <Link to="/box-sospesa" onClick={() => setOpen(false)} className="rounded-md px-3 py-2 text-sm font-medium text-foreground/80 hover:bg-foreground/5">Box sospesa</Link>
+            <Link to="/mie-prenotazioni" onClick={() => setOpen(false)} className="rounded-md px-3 py-2 text-sm font-medium text-foreground/80 hover:bg-foreground/5">Le mie prenotazioni</Link>
+            <Link to="/registrati" onClick={() => setOpen(false)} className="mt-2 inline-flex items-center justify-center rounded-full bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground transition-all hover:bg-primary/90">
+              Unisciti a noi
+            </Link>
+          </div>
+        </div>
+      )}
     </nav>
   );
 }
