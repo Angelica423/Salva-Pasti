@@ -39,8 +39,8 @@ function Navbar() {
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border/50">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-        <Link to="/" className="flex items-center gap-2">
-          <img src={logoAsset.url} alt="Salva Pasti" className="h-10 w-10 object-contain" />
+        <Link to="/" className="flex items-center gap-3">
+          <img src={logoAsset.url} alt="Salva Pasti" className="max-w-[120px] mr-4 h-10 w-10 object-contain" />
           <span className="text-lg font-semibold tracking-tight text-foreground">
             Salva Pasti
           </span>
