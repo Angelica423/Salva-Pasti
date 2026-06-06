@@ -37,31 +37,39 @@ function AnimatedSection({
 
 function Navbar() {
   const [open, setOpen] = useState(false);
-  const linkCls = "text-sm font-medium text-muted-foreground transition-colors hover:text-foreground";
+  const linkCls = "text-sm font-medium text-muted-foreground transition-colors hover:text-foreground whitespace-nowrap";
+  const navLinks = (
+    <>
+      <a href="#come-funziona" className={linkCls} onClick={() => setOpen(false)}>Come funziona</a>
+      <a href="#mappa" className={linkCls} onClick={() => setOpen(false)}>Mappa</a>
+      <Link to="/associazioni" className={linkCls} onClick={() => setOpen(false)}>Associazioni</Link>
+      <Link to="/box-sospesa" className={linkCls} onClick={() => setOpen(false)}>Box sospesa</Link>
+      <Link to="/mie-prenotazioni" className={linkCls} onClick={() => setOpen(false)}>Prenotazioni</Link>
+    </>
+  );
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border/50">
-      <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
+      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-6 px-4 sm:px-6">
         <Link to="/" className="flex items-center gap-2 shrink-0" onClick={() => setOpen(false)}>
           <img src={logoAsset.url} alt="Salva Pasti" className="h-9 w-9 object-contain" />
-          <span className="text-base font-semibold tracking-tight text-foreground sm:text-lg">
+          <span className="text-lg font-semibold tracking-tight text-foreground">
             Salva Pasti
           </span>
         </Link>
 
         {/* Desktop nav */}
-        <div className="hidden items-center gap-5 lg:flex">
-          <a href="#come-funziona" className={linkCls}>Come funziona</a>
-          <a href="#mappa" className={linkCls}>Mappa</a>
-          <Link to="/associazioni" className={linkCls}>Associazioni</Link>
-          <Link to="/box-sospesa" className={linkCls}>Box sospesa</Link>
-          <Link to="/mie-prenotazioni" className={linkCls}>Le mie prenotazioni</Link>
+        <div className="hidden flex-1 items-center justify-center gap-6 lg:flex">
+          {navLinks}
+        </div>
+
+        <div className="hidden items-center gap-3 lg:flex shrink-0">
+          <LanguageSwitcher />
           <Link to="/registrati" className="inline-flex items-center justify-center rounded-full bg-primary px-5 py-2 text-sm font-medium text-primary-foreground transition-all hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/20">
             Unisciti a noi
           </Link>
-          <LanguageSwitcher />
         </div>
 
-        {/* Mobile/tablet trigger */}
+        {/* Mobile trigger */}
         <div className="flex items-center gap-2 lg:hidden">
           <LanguageSwitcher />
           <button
@@ -85,12 +93,8 @@ function Navbar() {
       {/* Mobile panel */}
       {open && (
         <div className="lg:hidden border-t border-border/50 bg-background/95 backdrop-blur-md">
-          <div className="mx-auto flex max-w-6xl flex-col gap-1 px-4 py-3 sm:px-6">
-            <a href="#come-funziona" onClick={() => setOpen(false)} className="rounded-md px-3 py-2 text-sm font-medium text-foreground/80 hover:bg-foreground/5">Come funziona</a>
-            <a href="#mappa" onClick={() => setOpen(false)} className="rounded-md px-3 py-2 text-sm font-medium text-foreground/80 hover:bg-foreground/5">Mappa</a>
-            <Link to="/associazioni" onClick={() => setOpen(false)} className="rounded-md px-3 py-2 text-sm font-medium text-foreground/80 hover:bg-foreground/5">Associazioni</Link>
-            <Link to="/box-sospesa" onClick={() => setOpen(false)} className="rounded-md px-3 py-2 text-sm font-medium text-foreground/80 hover:bg-foreground/5">Box sospesa</Link>
-            <Link to="/mie-prenotazioni" onClick={() => setOpen(false)} className="rounded-md px-3 py-2 text-sm font-medium text-foreground/80 hover:bg-foreground/5">Le mie prenotazioni</Link>
+          <div className="mx-auto flex max-w-7xl flex-col gap-1 px-4 py-3 sm:px-6 [&>a]:rounded-md [&>a]:px-3 [&>a]:py-2 [&>a]:text-sm [&>a]:font-medium [&>a]:text-foreground/80 hover:[&>a]:bg-foreground/5">
+            {navLinks}
             <Link to="/registrati" onClick={() => setOpen(false)} className="mt-2 inline-flex items-center justify-center rounded-full bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground transition-all hover:bg-primary/90">
               Unisciti a noi
             </Link>
