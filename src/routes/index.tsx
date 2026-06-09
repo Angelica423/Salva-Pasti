@@ -673,37 +673,39 @@ function Partners() {
     {
       label: "Associazioni",
       items: [
-         { nome: "Diventa partner", ruolo: "" },
-         { nome: "Diventa partner", ruolo: "" },
-         { nome: "Diventa partner", ruolo: "" },
-         { nome: "Diventa partner", ruolo: "" },
+        { name: "Diventa partner", role: "" },
+        { name: "Diventa partner", role: "" },
+        { name: "Diventa partner", role: "" },
+        { name: "Diventa partner", role: "" },
       ],
-      },
+    },
     {
       label: "Attività commerciali",
       items: [
-         { nome: "Diventa partner", ruolo: "" },
-         { nome: "Diventa partner", ruolo: "" },
-         { nome: "Diventa partner", ruolo: "" },
-         { nome: "Diventa partner", ruolo: "" },
+         { name: "Diventa partner", role: "" },
+         { name: "Diventa partner", role: "" },
+         { name: "Diventa partner", role: "" },
+         { name: "Diventa partner", role: "" },
       ],
     },
     {
       label: "Comuni",
       items: [
-          { nome: "Diventa partner", ruolo: "" },
-          { nome: "Diventa partner", ruolo: "" },
-          { nome: "Diventa partner", ruolo: "" },
-          { nome: "Diventa partner", ruolo: "" },
+          { name: "Diventa partner", role: "" },
+          { name: "Diventa partner", role: "" },
+          { name: "Diventa partner", role: "" },
+          { name: "Diventa partner", role: "" },
       ],
     },
     {
       label: "Aziende",
+      
       items: [
-          { nome: "Diventa partner", ruolo: "" },
-          { nome: "Diventa partner", ruolo: "" },
-          { nome: "Diventa partner", ruolo: "" },
-          { nome: "Diventa partner", ruolo: "" },
+          { name: "Diventa partner", role: "" },
+          { name: "Diventa partner", role: "" },
+
+          { name: "Diventa partner", role: "" },
+          { name: "Diventa partner", role: "" },
       ],
     },
   ];
