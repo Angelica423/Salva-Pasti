@@ -229,25 +229,6 @@ function HowItWorks() {
           </div>
         </AnimatedSection>
 
-        <AnimatedSection className="mb-14">
-          <div className="overflow-hidden rounded-3xl border border-border bg-card shadow-xl shadow-foreground/5">
-            <video
-              src="/come-funziona.mp4"
-              className="block aspect-video w-full"
-              autoPlay
-              muted
-              loop
-              playsInline
-              controls
-              poster=""
-            />
-          </div>
-          <p className="mt-3 text-center text-xs uppercase tracking-widest text-muted-foreground">
-            60 secondi · senza parole
-          </p>
-
-        </AnimatedSection>
-
         <div className="grid gap-8 md:grid-cols-3">
           {steps.map((step, i) => (
             <AnimatedSection key={i}>
