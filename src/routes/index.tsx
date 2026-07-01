@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useRef, useState } from "react";
+import { Leaf } from "lucide-react";
 import { motion, useInView } from "framer-motion";
 import heroFood from "../assets/hero-food.jpg";
 import logoAsset from "@/assets/salva-pasti-logo.png.asset.json";
@@ -717,8 +718,8 @@ function Partners() {
               {cat.items.map((p, i) => (
                 <AnimatedSection key={i}>
                   <div className="flex h-full flex-col items-center justify-center rounded-2xl border border-border bg-card p-6 text-center transition-all hover:border-terracotta/30 hover:shadow-lg hover:shadow-terracotta/5">
-                    <div className="flex h-14 w-14 items-center justify-center rounded-full bg-muted text-xl font-bold text-muted-foreground">
-                      {p.name.charAt(0)}
+                    <div className="flex h-14 w-14 items-center justify-center rounded-full bg-muted text-muted-foreground">
+                      <Leaf className="h-6 w-6" />
                     </div>
                     <h4 className="mt-4 text-base font-semibold text-foreground">{p.name}</h4>
                     <p className="mt-1 text-sm text-muted-foreground">{p.role}</p>
