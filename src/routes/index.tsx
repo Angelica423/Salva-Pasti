@@ -2,6 +2,8 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useRef, useState } from "react";
 import { Leaf } from "lucide-react";
 import { motion, useInView } from "framer-motion";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 import heroFood from "../assets/hero-food.jpg";
 import logoAsset from "@/assets/salva-pasti-logo.png.asset.json";
 import { LiveMap } from "@/components/live-map";
