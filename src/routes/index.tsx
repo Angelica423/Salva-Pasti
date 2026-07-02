@@ -8,7 +8,7 @@ import heroFood from "../assets/hero-food.jpg";
 import logoAsset from "@/assets/salva-pasti-logo.png.asset.json";
 import { LiveMap } from "@/components/live-map";
 import { ProximityNotifier } from "@/components/proximity-notifier";
-import { useInstallApp, InstallInstructionsModal } from "@/components/install-app";
+
 import { LanguageSwitcher } from "@/lib/i18n";
 
 export const Route = createFileRoute("/")({
@@ -560,7 +560,6 @@ function ComingSoon() {
 }
 
 function DownloadApp() {
-  const install = useInstallApp();
   return (
     <section id="scarica" className="relative overflow-hidden border-t border-border bg-background py-24">
       <div className="absolute -top-32 right-1/4 h-72 w-72 rounded-full bg-terracotta/10 blur-3xl" aria-hidden />
@@ -594,12 +593,6 @@ function DownloadApp() {
           <PhoneMockup />
         </AnimatedSection>
       </div>
-
-      <InstallInstructionsModal
-        open={install.open}
-        onClose={() => install.setOpen(false)}
-        platform={install.platform}
-      />
     </section>
   );
 }
