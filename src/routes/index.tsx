@@ -2,6 +2,8 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useRef, useState } from "react";
 import { Leaf } from "lucide-react";
 import { motion, useInView } from "framer-motion";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 import heroFood from "../assets/hero-food.jpg";
 import logoAsset from "@/assets/salva-pasti-logo.png.asset.json";
 import { LiveMap } from "@/components/live-map";
@@ -613,33 +615,7 @@ function DownloadApp() {
         </AnimatedSection>
 
         <AnimatedSection>
-          <div className="relative mx-auto h-[520px] w-[260px]">
-            <div className="absolute inset-0 rounded-[3rem] border border-border bg-card shadow-2xl shadow-foreground/10">
-              <div className="m-3 h-[calc(100%-1.5rem)] overflow-hidden rounded-[2.4rem] bg-gradient-to-br from-sage/15 via-background to-terracotta/15 p-5">
-                <div className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-                  Vicino a te
-                </div>
-                <div className="mt-2 font-serif text-2xl italic leading-tight text-foreground">
-                  3 box <span className="text-terracotta">disponibili</span>
-                </div>
-                <div className="mt-5 space-y-3">
-                  {[
-                    { name: "Trattoria Da Lucia", dist: "420 m", porz: "8 porzioni" },
-                    { name: "Panetteria Sole", dist: "780 m", porz: "12 porzioni" },
-                    { name: "Gelateria Centrale", dist: "1.1 km", porz: "5 porzioni" },
-                  ].map((b) => (
-                    <div key={b.name} className="rounded-2xl border border-border bg-card p-3">
-                      <div className="text-xs font-semibold uppercase tracking-wider text-sage">
-                        {b.dist}
-                      </div>
-                      <div className="mt-1 text-sm font-semibold text-foreground">{b.name}</div>
-                      <div className="text-xs text-muted-foreground">{b.porz}</div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
+          <PhoneMockup />
         </AnimatedSection>
       </div>
 
@@ -649,6 +625,72 @@ function DownloadApp() {
         platform={install.platform}
       />
     </section>
+  );
+}
+
+function PhoneMockup() {
+  const { data: boxes = [], isLoading } = useQuery({
+    queryKey: ["food_boxes", "preview"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("food_boxes")
+        .select("id, restaurant_name, address, portions, status")
+        .eq("status", "available")
+        .order("created_at", { ascending: false })
+        .limit(3);
+      if (error) throw error;
+      return data ?? [];
+    },
+    staleTime: 30_000,
+    retry: 1,
+  });
+
+  const available = boxes.length;
+
+  return (
+    <div className="relative mx-auto h-[520px] w-[260px]">
+      <div className="absolute inset-0 rounded-[3rem] border border-border bg-card shadow-2xl shadow-foreground/10">
+        <div className="m-3 h-[calc(100%-1.5rem)] overflow-hidden rounded-[2.4rem] bg-gradient-to-br from-sage/15 via-background to-terracotta/15 p-5">
+          <div className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+            Vicino a te
+          </div>
+          <div className="mt-2 font-serif text-2xl italic leading-tight text-foreground">
+            {isLoading ? (
+              <>Box <span className="text-terracotta">in arrivo…</span></>
+            ) : available === 0 ? (
+              <>Nessuna box <span className="text-terracotta">al momento</span></>
+            ) : (
+              <>{available} box <span className="text-terracotta">disponibili</span></>
+            )}
+          </div>
+          <div className="mt-5 space-y-3">
+            {isLoading &&
+              [0, 1, 2].map((i) => (
+                <div key={i} className="h-16 animate-pulse rounded-2xl border border-border bg-muted/40" />
+              ))}
+            {!isLoading && boxes.length === 0 && (
+              <div className="rounded-2xl border border-dashed border-border bg-card p-4 text-xs text-muted-foreground">
+                Torna più tardi — nuove box vengono aggiunte ogni giorno.
+              </div>
+            )}
+            {!isLoading &&
+              boxes.map((b) => (
+                <div key={b.id} className="rounded-2xl border border-border bg-card p-3">
+                  <div className="text-xs font-semibold uppercase tracking-wider text-sage">
+                    Disponibile
+                  </div>
+                  <div className="mt-1 text-sm font-semibold text-foreground">
+                    {b.restaurant_name}
+                  </div>
+                  <div className="text-xs text-muted-foreground">
+                    {b.portions} porzioni
+                  </div>
+                </div>
+              ))}
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }
 
