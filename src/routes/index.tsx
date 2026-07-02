@@ -172,7 +172,7 @@ function Stats() {
     { value: "30%", label: "del cibo cucinato sprecato ogni giorno" },
     { value: "5M", label: "persone in povertà alimentare in Italia" },
     { value: "0€", label: "costo per chi riceve il cibo" },
-    { value: "∞", label: "porzioni già salvate dalla rete" },
+    { value: "0", label: "porzioni salvate · unisciti per cambiare questo numero" },
   ];
 
   return (
