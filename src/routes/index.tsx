@@ -158,6 +158,9 @@ function Story() {
           <p className="mx-auto mt-8 text-xl leading-relaxed text-muted-foreground sm:text-2xl">
             "Lavorando a stretto contatto con alcune strutture, ho visto buttare cibo per decine di famiglie. Da quel momento ho capito che doveva esistere un modo per connettere chi ha troppo con chi ha poco."
           </p>
+          <p className="mx-auto mt-6 text-xl leading-relaxed text-muted-foreground sm:text-2xl">
+            In quel momento ho capito che non era uno spreco di cibo. Era uno spreco di umanità.
+          </p>
         </AnimatedSection>
       </div>
     </section>
