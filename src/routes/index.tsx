@@ -753,6 +753,50 @@ function Partners() {
             </div>
           </div>
         ))}
+
+        <AnimatedSection className="mt-20">
+          <div className="rounded-2xl border border-border bg-card p-8">
+            <h3 className="mb-2 text-center text-2xl font-semibold tracking-tight text-foreground">
+              Diventa sponsor
+            </h3>
+            <p className="mb-8 text-center text-muted-foreground">
+              Sostieni il progetto e fai vedere il tuo brand nella rete Salva Pasti.
+            </p>
+            <div className="overflow-hidden rounded-xl border border-border">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead className="w-[140px]">Piano</TableHead>
+                    <TableHead>Contributo</TableHead>
+                    <TableHead>Cosa include</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  <TableRow>
+                    <TableCell className="font-semibold">Base</TableCell>
+                    <TableCell>20€/mese</TableCell>
+                    <TableCell>Logo visibile nell'app</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell className="font-semibold">Standard</TableCell>
+                    <TableCell>50€/mese</TableCell>
+                    <TableCell>Logo nell'app, post Instagram dedicato e vetrofania</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell className="font-semibold">Premium</TableCell>
+                    <TableCell>Su misura</TableCell>
+                    <TableCell>Prima posizione esclusiva sulla mappa</TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
+            </div>
+            <div className="mt-8 flex justify-center">
+              <Button asChild>
+                <a href="mailto:info@salvapasti.it">Contattaci</a>
+              </Button>
+            </div>
+          </div>
+        </AnimatedSection>
       </div>
     </section>
   );
