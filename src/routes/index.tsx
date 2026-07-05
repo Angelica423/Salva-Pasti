@@ -4,12 +4,22 @@ import { Leaf } from "lucide-react";
 import { motion, useInView } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { Button } from "@/components/ui/button";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import heroFood from "../assets/hero-food.jpg";
 import logoAsset from "@/assets/salva-pasti-logo.png.asset.json";
 import { LiveMap } from "@/components/live-map";
 import { ProximityNotifier } from "@/components/proximity-notifier";
 
 import { LanguageSwitcher } from "@/lib/i18n";
+
 
 export const Route = createFileRoute("/")({
   component: Index,
