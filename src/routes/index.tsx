@@ -766,33 +766,54 @@ function Partners() {
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead className="w-[140px]">Piano</TableHead>
-                    <TableHead>Contributo</TableHead>
-                    <TableHead>Cosa include</TableHead>
+                    <TableHead className="w-[120px] align-top">Piano</TableHead>
+                    <TableHead className="w-[140px] align-top">Contributo</TableHead>
+                    <TableHead className="align-top">Cosa include</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   <TableRow>
-                    <TableCell className="font-semibold">Base</TableCell>
-                    <TableCell>20€/mese</TableCell>
-                    <TableCell>Logo visibile nell'app</TableCell>
+                    <TableCell className="font-semibold align-top">Base</TableCell>
+                    <TableCell className="align-top">20€/mese</TableCell>
+                    <TableCell className="align-top">
+                      <ul className="list-disc pl-4 text-sm leading-relaxed text-muted-foreground">
+                        <li>Logo visibile nell'app e sul sito</li>
+                      </ul>
+                    </TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell className="font-semibold">Standard</TableCell>
-                    <TableCell>50€/mese</TableCell>
-                    <TableCell>Logo nell'app, post Instagram dedicato e vetrofania</TableCell>
+                    <TableCell className="font-semibold align-top">Standard</TableCell>
+                    <TableCell className="align-top">50€/mese</TableCell>
+                    <TableCell className="align-top">
+                      <ul className="list-disc pl-4 text-sm leading-relaxed text-muted-foreground">
+                        <li>Logo nell'app e sul sito</li>
+                        <li>Post Instagram mensile dedicato</li>
+                        <li>Vetrofania fisica da esporre in vetrina</li>
+                        <li>Report di impatto della sponsorizzazione</li>
+                      </ul>
+                    </TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell className="font-semibold">Premium</TableCell>
-                    <TableCell>Su misura</TableCell>
-                    <TableCell>Prima posizione esclusiva sulla mappa</TableCell>
+                    <TableCell className="font-semibold align-top">Premium</TableCell>
+                    <TableCell className="align-top">Su misura</TableCell>
+                    <TableCell className="align-top">
+                      <ul className="list-disc pl-4 text-sm leading-relaxed text-muted-foreground">
+                        <li>Prima posizione esclusiva sulla mappa</li>
+                        <li>Logo e link nel sito web ufficiale</li>
+                        <li>Pagina dedicata sul sito</li>
+                        <li>Post Instagram mensile dedicato</li>
+                        <li>Esclusiva di zona: un solo partner per categoria</li>
+                        <li>Report personalizzato con CO₂ risparmiata</li>
+                        <li>Accesso anticipato alle nuove funzionalità</li>
+                      </ul>
+                    </TableCell>
                   </TableRow>
                 </TableBody>
               </Table>
             </div>
             <div className="mt-8 flex justify-center">
               <Button asChild>
-                <a href="mailto:info@salvapasti.it">Contattaci</a>
+                <a href="mailto:info@salvapasti.it">Contattaci per il Premium</a>
               </Button>
             </div>
           </div>
