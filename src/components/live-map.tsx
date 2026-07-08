@@ -374,6 +374,16 @@ export function LiveMap() {
               </motion.div>
             )}
 
+            {boxes.length === 0 && (
+              <div className="pointer-events-none absolute inset-0 flex items-center justify-center p-6">
+                <div className="pointer-events-auto max-w-sm rounded-2xl bg-background/95 px-5 py-4 text-center shadow-lg backdrop-blur-sm">
+                  <p className="text-sm font-medium text-foreground">
+                    Nessuna box disponibile in questo momento. Torna più tardi o aiutaci a crescere aderendo come ristoratore.
+                  </p>
+                </div>
+              </div>
+            )}
+
             <div className="absolute bottom-4 left-4 rounded-lg bg-background/90 px-3 py-2 text-xs font-medium text-foreground backdrop-blur-sm">
               <span
                 className="mr-2 inline-block h-2 w-2 animate-pulse rounded-full"
