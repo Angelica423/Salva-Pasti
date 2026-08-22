@@ -39,6 +39,7 @@ function Registrati() {
   const [accettata, setAccettata] = useState(false);
   const [errore, setErrore] = useState<string | null>(null);
   const [submitted, setSubmitted] = useState(false);
+  const { session, loading: sessioneInCaricamento } = useSession();
 
   useEffect(() => {
     try {
