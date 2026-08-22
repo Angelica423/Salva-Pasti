@@ -1,6 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import { supabase } from "@/integrations/supabase/client";
+import { useSession } from "@/lib/auth";
+import { PhoneVerification } from "@/components/phone-verification";
 
 export const Route = createFileRoute("/registrati")({
   component: Registrati,
@@ -36,6 +39,7 @@ function Registrati() {
   const [accettata, setAccettata] = useState(false);
   const [errore, setErrore] = useState<string | null>(null);
   const [submitted, setSubmitted] = useState(false);
+  const { session, loading: sessioneInCaricamento } = useSession();
 
   useEffect(() => {
     try {
@@ -46,7 +50,7 @@ function Registrati() {
     }
   }, []);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrore(null);
 
@@ -74,6 +78,17 @@ function Registrati() {
       liberatoriaVersione: LIBERATORIA_VERSIONE,
       accettataIl: new Date().toISOString(),
     };
+
+    if (session) {
+      const { error } = await supabase
+        .from("profiles")
+        .update({ nome: nomeTrim, ruolo })
+        .eq("id", session.user.id);
+      if (error) {
+        setErrore("Impossibile salvare il profilo. Riprova.");
+        return;
+      }
+    }
 
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(reg));
@@ -105,7 +120,19 @@ function Registrati() {
           </p>
         </motion.div>
 
-        {existing && !submitted ? (
+        {sessioneInCaricamento ? (
+          <p className="mt-10 text-sm text-muted-foreground">Caricamento…</p>
+        ) : !session ? (
+          <div className="mt-10">
+            <PhoneVerification
+              titolo="Primo accesso: verifica il numero"
+              sottotitolo="Ti inviamo un SMS con un codice a 6 cifre. Un numero di telefono = un solo account."
+            />
+            <p className="mt-4 text-sm text-muted-foreground">
+              Dopo la verifica completi nome, ruolo e liberatoria: una volta sola.
+            </p>
+          </div>
+        ) : existing && !submitted ? (
           <div className="mt-10 rounded-2xl border border-border bg-card p-8">
             <p className="text-sm font-medium uppercase tracking-widest text-sage">
               Registrazione attiva
