@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as VerificaRouteImport } from './routes/verifica'
 import { Route as RegistratiRouteImport } from './routes/registrati'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as MiePrenotazioniRouteImport } from './routes/mie-prenotazioni'
@@ -16,6 +17,11 @@ import { Route as BoxSospesaRouteImport } from './routes/box-sospesa'
 import { Route as AssociazioniRouteImport } from './routes/associazioni'
 import { Route as IndexRouteImport } from './routes/index'
 
+const VerificaRoute = VerificaRouteImport.update({
+  id: '/verifica',
+  path: '/verifica',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const RegistratiRoute = RegistratiRouteImport.update({
   id: '/registrati',
   path: '/registrati',
@@ -54,6 +60,7 @@ export interface FileRoutesByFullPath {
   '/mie-prenotazioni': typeof MiePrenotazioniRoute
   '/privacy': typeof PrivacyRoute
   '/registrati': typeof RegistratiRoute
+  '/verifica': typeof VerificaRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -62,6 +69,7 @@ export interface FileRoutesByTo {
   '/mie-prenotazioni': typeof MiePrenotazioniRoute
   '/privacy': typeof PrivacyRoute
   '/registrati': typeof RegistratiRoute
+  '/verifica': typeof VerificaRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -71,6 +79,7 @@ export interface FileRoutesById {
   '/mie-prenotazioni': typeof MiePrenotazioniRoute
   '/privacy': typeof PrivacyRoute
   '/registrati': typeof RegistratiRoute
+  '/verifica': typeof VerificaRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -81,6 +90,7 @@ export interface FileRouteTypes {
     | '/mie-prenotazioni'
     | '/privacy'
     | '/registrati'
+    | '/verifica'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -89,6 +99,7 @@ export interface FileRouteTypes {
     | '/mie-prenotazioni'
     | '/privacy'
     | '/registrati'
+    | '/verifica'
   id:
     | '__root__'
     | '/'
@@ -97,6 +108,7 @@ export interface FileRouteTypes {
     | '/mie-prenotazioni'
     | '/privacy'
     | '/registrati'
+    | '/verifica'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -106,10 +118,18 @@ export interface RootRouteChildren {
   MiePrenotazioniRoute: typeof MiePrenotazioniRoute
   PrivacyRoute: typeof PrivacyRoute
   RegistratiRoute: typeof RegistratiRoute
+  VerificaRoute: typeof VerificaRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/verifica': {
+      id: '/verifica'
+      path: '/verifica'
+      fullPath: '/verifica'
+      preLoaderRoute: typeof VerificaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/registrati': {
       id: '/registrati'
       path: '/registrati'
@@ -162,6 +182,7 @@ const rootRouteChildren: RootRouteChildren = {
   MiePrenotazioniRoute: MiePrenotazioniRoute,
   PrivacyRoute: PrivacyRoute,
   RegistratiRoute: RegistratiRoute,
+  VerificaRoute: VerificaRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

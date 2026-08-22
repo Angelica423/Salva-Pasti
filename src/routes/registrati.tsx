@@ -1,6 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import { supabase } from "@/integrations/supabase/client";
+import { useSession } from "@/lib/auth";
+import { PhoneVerification } from "@/components/phone-verification";
 
 export const Route = createFileRoute("/registrati")({
   component: Registrati,
