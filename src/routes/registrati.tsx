@@ -120,7 +120,19 @@ function Registrati() {
           </p>
         </motion.div>
 
-        {existing && !submitted ? (
+        {sessioneInCaricamento ? (
+          <p className="mt-10 text-sm text-muted-foreground">Caricamento…</p>
+        ) : !session ? (
+          <div className="mt-10">
+            <PhoneVerification
+              titolo="Primo accesso: verifica il numero"
+              sottotitolo="Ti inviamo un SMS con un codice a 6 cifre. Un numero di telefono = un solo account."
+            />
+            <p className="mt-4 text-sm text-muted-foreground">
+              Dopo la verifica completi nome, ruolo e liberatoria: una volta sola.
+            </p>
+          </div>
+        ) : existing && !submitted ? (
           <div className="mt-10 rounded-2xl border border-border bg-card p-8">
             <p className="text-sm font-medium uppercase tracking-widest text-sage">
               Registrazione attiva
