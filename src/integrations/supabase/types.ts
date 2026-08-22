@@ -110,6 +110,30 @@ export type Database = {
         }
         Relationships: []
       }
+      profiles: {
+        Row: {
+          created_at: string
+          id: string
+          nome: string | null
+          phone: string
+          ruolo: string
+        }
+        Insert: {
+          created_at?: string
+          id: string
+          nome?: string | null
+          phone: string
+          ruolo?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          nome?: string | null
+          phone?: string
+          ruolo?: string
+        }
+        Relationships: []
+      }
       reservations: {
         Row: {
           created_at: string
