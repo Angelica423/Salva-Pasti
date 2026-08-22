@@ -78,6 +78,17 @@ function Registrati() {
       accettataIl: new Date().toISOString(),
     };
 
+    if (session) {
+      const { error } = await supabase
+        .from("profiles")
+        .update({ nome: nomeTrim, ruolo })
+        .eq("id", session.user.id);
+      if (error) {
+        setErrore("Impossibile salvare il profilo. Riprova.");
+        return;
+      }
+    }
+
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(reg));
       setExisting(reg);
