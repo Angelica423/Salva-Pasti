@@ -232,6 +232,35 @@ function MieePrenotazioni() {
           </div>
         ) : (
           <>
+            {limiti?.suspended_until ? (
+              <div className="mt-8 rounded-2xl border border-destructive/30 bg-destructive/10 p-5">
+                <p className="text-sm font-semibold text-destructive">
+                  Account sospeso fino al {formatDateTime(limiti.suspended_until)}
+                </p>
+                <p className="mt-1 text-sm text-muted-foreground">
+                  Hai accumulato 3 mancati ritiri consecutivi. Potrai prenotare di nuovo dopo 48
+                  ore: un ritiro completato azzera il contatore.
+                </p>
+              </div>
+            ) : limiti && limiti.reservations_today >= 1 ? (
+              <div className="mt-8 rounded-2xl border border-border bg-card p-5">
+                <p className="text-sm font-semibold text-foreground">
+                  Hai già prenotato la tua box di oggi
+                </p>
+                <p className="mt-1 text-sm text-muted-foreground">
+                  Il limite è di 1 box al giorno per utente. Ritira entro l'orario indicato: se
+                  scade, viene registrata come mancato ritiro.
+                </p>
+              </div>
+            ) : limiti && limiti.consecutive_no_shows > 0 ? (
+              <div className="mt-8 rounded-2xl border border-terracotta/30 bg-terracotta/5 p-5">
+                <p className="text-sm text-foreground">
+                  Attenzione: {limiti.consecutive_no_shows} mancato ritiro consecutivo su 3. Dopo 3
+                  l'account viene sospeso per 48 ore.
+                </p>
+              </div>
+            ) : null}
+
             {/* Storico personale */}
             <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-4">
               <div className="rounded-2xl border border-border bg-card p-5">
