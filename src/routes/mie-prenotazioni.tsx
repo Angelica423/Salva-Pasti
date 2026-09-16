@@ -133,6 +133,26 @@ function MieePrenotazioni() {
     enabled: !!reg?.nome,
   });
 
+  // Limite giornaliero + eventuale sospensione per mancati ritiri
+  const { data: limiti } = useQuery({
+    queryKey: ["reserver-limits", reg?.email, rows.length],
+    queryFn: async () => {
+      if (!reg?.email) return null;
+      const { data, error } = await supabase.rpc("get_reserver_limits", {
+        p_email: reg.email,
+      });
+      if (error) throw error;
+      const row = Array.isArray(data) ? data[0] : data;
+      return (row ?? null) as {
+        suspended_until: string | null;
+        consecutive_no_shows: number;
+        reservations_today: number;
+      } | null;
+    },
+    enabled: !!reg?.email,
+  });
+
+
   const boxMap = useMemo(() => new Map(boxes.map((b) => [b.id, b])), [boxes]);
 
   // Storico stats
