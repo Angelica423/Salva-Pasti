@@ -29,7 +29,7 @@ type ReservationRow = {
   reserver_name: string;
   reserver_email: string;
   reserver_role: string;
-  status: "confirmed" | "cancelled" | "picked_up";
+  status: "confirmed" | "cancelled" | "picked_up" | "no_show";
   pickup_code: string | null;
   created_at: string;
 };
@@ -62,12 +62,14 @@ const STATUS_LABEL: Record<ReservationRow["status"], string> = {
   confirmed: "Confermata",
   picked_up: "Ritirata",
   cancelled: "Annullata",
+  no_show: "Mancato ritiro",
 };
 
 const STATUS_COLOR: Record<ReservationRow["status"], string> = {
   confirmed: "bg-sage/15 text-sage",
   picked_up: "bg-primary/15 text-primary",
   cancelled: "bg-muted text-muted-foreground",
+  no_show: "bg-destructive/15 text-destructive",
 };
 
 function MieePrenotazioni() {
@@ -246,7 +248,7 @@ function MieePrenotazioni() {
 
             <div className="mt-8 flex flex-wrap gap-3">
               <div className="flex gap-1 rounded-full border border-border bg-card p-1">
-                {(["all", "confirmed", "picked_up", "cancelled"] as const).map((s) => (
+                {(["all", "confirmed", "picked_up", "cancelled", "no_show"] as const).map((s) => (
                   <button
                     key={s}
                     onClick={() => setStatusFilter(s)}
