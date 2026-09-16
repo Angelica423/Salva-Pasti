@@ -29,7 +29,7 @@ type ReservationRow = {
   reserver_name: string;
   reserver_email: string;
   reserver_role: string;
-  status: "confirmed" | "cancelled" | "picked_up";
+  status: "confirmed" | "cancelled" | "picked_up" | "no_show";
   pickup_code: string | null;
   created_at: string;
 };
@@ -62,12 +62,14 @@ const STATUS_LABEL: Record<ReservationRow["status"], string> = {
   confirmed: "Confermata",
   picked_up: "Ritirata",
   cancelled: "Annullata",
+  no_show: "Mancato ritiro",
 };
 
 const STATUS_COLOR: Record<ReservationRow["status"], string> = {
   confirmed: "bg-sage/15 text-sage",
   picked_up: "bg-primary/15 text-primary",
   cancelled: "bg-muted text-muted-foreground",
+  no_show: "bg-destructive/15 text-destructive",
 };
 
 function MieePrenotazioni() {
@@ -130,6 +132,26 @@ function MieePrenotazioni() {
     },
     enabled: !!reg?.nome,
   });
+
+  // Limite giornaliero + eventuale sospensione per mancati ritiri
+  const { data: limiti } = useQuery({
+    queryKey: ["reserver-limits", reg?.email, rows.length],
+    queryFn: async () => {
+      if (!reg?.email) return null;
+      const { data, error } = await supabase.rpc("get_reserver_limits", {
+        p_email: reg.email,
+      });
+      if (error) throw error;
+      const row = Array.isArray(data) ? data[0] : data;
+      return (row ?? null) as {
+        suspended_until: string | null;
+        consecutive_no_shows: number;
+        reservations_today: number;
+      } | null;
+    },
+    enabled: !!reg?.email,
+  });
+
 
   const boxMap = useMemo(() => new Map(boxes.map((b) => [b.id, b])), [boxes]);
 
@@ -210,6 +232,35 @@ function MieePrenotazioni() {
           </div>
         ) : (
           <>
+            {limiti?.suspended_until ? (
+              <div className="mt-8 rounded-2xl border border-destructive/30 bg-destructive/10 p-5">
+                <p className="text-sm font-semibold text-destructive">
+                  Account sospeso fino al {formatDateTime(limiti.suspended_until)}
+                </p>
+                <p className="mt-1 text-sm text-muted-foreground">
+                  Hai accumulato 3 mancati ritiri consecutivi. Potrai prenotare di nuovo dopo 48
+                  ore: un ritiro completato azzera il contatore.
+                </p>
+              </div>
+            ) : limiti && limiti.reservations_today >= 1 ? (
+              <div className="mt-8 rounded-2xl border border-border bg-card p-5">
+                <p className="text-sm font-semibold text-foreground">
+                  Hai già prenotato la tua box di oggi
+                </p>
+                <p className="mt-1 text-sm text-muted-foreground">
+                  Il limite è di 1 box al giorno per utente. Ritira entro l'orario indicato: se
+                  scade, viene registrata come mancato ritiro.
+                </p>
+              </div>
+            ) : limiti && limiti.consecutive_no_shows > 0 ? (
+              <div className="mt-8 rounded-2xl border border-terracotta/30 bg-terracotta/5 p-5">
+                <p className="text-sm text-foreground">
+                  Attenzione: {limiti.consecutive_no_shows} mancato ritiro consecutivo su 3. Dopo 3
+                  l'account viene sospeso per 48 ore.
+                </p>
+              </div>
+            ) : null}
+
             {/* Storico personale */}
             <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-4">
               <div className="rounded-2xl border border-border bg-card p-5">
@@ -246,7 +297,7 @@ function MieePrenotazioni() {
 
             <div className="mt-8 flex flex-wrap gap-3">
               <div className="flex gap-1 rounded-full border border-border bg-card p-1">
-                {(["all", "confirmed", "picked_up", "cancelled"] as const).map((s) => (
+                {(["all", "confirmed", "picked_up", "cancelled", "no_show"] as const).map((s) => (
                   <button
                     key={s}
                     onClick={() => setStatusFilter(s)}
