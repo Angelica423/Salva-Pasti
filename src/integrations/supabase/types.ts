@@ -175,11 +175,36 @@ export type Database = {
           },
         ]
       }
+      reserver_status: {
+        Row: {
+          consecutive_no_shows: number
+          created_at: string
+          email: string
+          suspended_until: string | null
+          updated_at: string
+        }
+        Insert: {
+          consecutive_no_shows?: number
+          created_at?: string
+          email: string
+          suspended_until?: string | null
+          updated_at?: string
+        }
+        Update: {
+          consecutive_no_shows?: number
+          created_at?: string
+          email?: string
+          suspended_until?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
+      expire_stale_reservations: { Args: never; Returns: number }
       get_my_reservations: {
         Args: { p_email: string }
         Returns: {
@@ -198,6 +223,14 @@ export type Database = {
           isOneToOne: false
           isSetofReturn: true
         }
+      }
+      get_reserver_limits: {
+        Args: { p_email: string }
+        Returns: {
+          consecutive_no_shows: number
+          reservations_today: number
+          suspended_until: string
+        }[]
       }
       reserve_food_box: {
         Args: {
