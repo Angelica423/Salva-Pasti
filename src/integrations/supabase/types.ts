@@ -224,6 +224,22 @@ export type Database = {
           isSetofReturn: true
         }
       }
+      get_reservation_for_pickup: {
+        Args: { p_pickup_code: string; p_reservation_id: string }
+        Returns: {
+          address: string
+          created_at: string
+          description: string
+          id: string
+          pickup_from: string
+          pickup_to: string
+          portions: number
+          reserver_name: string
+          reserver_role: string
+          restaurant_name: string
+          status: string
+        }[]
+      }
       get_reserver_limits: {
         Args: { p_email: string }
         Returns: {
