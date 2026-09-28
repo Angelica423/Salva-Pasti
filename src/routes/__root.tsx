@@ -76,6 +76,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { title: "Salva Pasti — Il cibo non si butta. Si condivide." },
       { name: "description", content: "Connettiamo ristoranti e associazioni per salvare il cibo dallo spreco e distribuirlo con dignità." },
       { name: "author", content: "Salva Pasti" },
+      { name: "theme-color", content: "#c2410c" },
+      { name: "mobile-web-app-capable", content: "yes" },
+      { name: "apple-mobile-web-app-capable", content: "yes" },
+      { name: "apple-mobile-web-app-status-bar-style", content: "default" },
+      { name: "apple-mobile-web-app-title", content: "Salva Pasti" },
+      { name: "application-name", content: "Salva Pasti" },
       { property: "og:title", content: "Salva Pasti — Il cibo non si butta. Si condivide." },
       { property: "og:description", content: "Connettiamo ristoranti e associazioni per salvare il cibo dallo spreco e distribuirlo con dignità." },
       { property: "og:type", content: "website" },
@@ -103,7 +109,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="it">
       <head>
         <HeadContent />
       </head>
