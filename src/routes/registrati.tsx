@@ -230,7 +230,7 @@ function Registrati() {
                 onChange={(e) => setRuolo(e.target.value as Registration["ruolo"])}
                 className="mt-2 w-full rounded-lg border border-border bg-background px-4 py-3 text-foreground outline-none transition-colors focus:border-primary"
               >
-                <option value="ristoratore">Ristoratore / negozio</option>
+                <option value="ristoratore">Ristorante / bar / gelateria / pasticceria / negozio</option>
                 <option value="associazione">Associazione</option>
                 <option value="volontario">Volontario rider</option>
                 <option value="cittadino">Cittadino</option>

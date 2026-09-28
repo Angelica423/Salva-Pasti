@@ -416,6 +416,9 @@ function PartnerApplicationForm() {
                 <option value="parrocchia">Parrocchia</option>
                 <option value="mensa">Mensa sociale</option>
                 <option value="volontariato">Gruppo di volontariato</option>
+                <option value="bar">Bar / caffetteria</option>
+                <option value="gelateria">Gelateria</option>
+                <option value="pasticceria">Pasticceria</option>
                 <option value="altro">Altro</option>
               </select>
             </label>
