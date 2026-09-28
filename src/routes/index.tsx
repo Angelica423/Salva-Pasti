@@ -570,6 +570,7 @@ function ComingSoon() {
 }
 
 function DownloadApp() {
+  const { platform, installed, open, setOpen, trigger } = useInstallApp();
   return (
     <section id="scarica" className="relative overflow-hidden border-t border-border bg-background py-24">
       <div className="absolute -top-32 right-1/4 h-72 w-72 rounded-full bg-terracotta/10 blur-3xl" aria-hidden />
@@ -586,14 +587,29 @@ function DownloadApp() {
             Mappa in tempo reale, notifiche di prossimità, prenotazione in un tap.
             Gratis, senza pubblicità, con dignità.
           </p>
-          <a
-            href="https://salvapasti.lovable.app"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-8 inline-flex items-center justify-center gap-2 rounded-full bg-primary px-8 py-3.5 text-base font-semibold text-primary-foreground transition-all hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/20"
-          >
-            <span aria-hidden>➜</span> Apri l'app
-          </a>
+          <div className="mt-8 flex flex-wrap items-center gap-3">
+            {installed ? (
+              <span className="inline-flex items-center gap-2 rounded-full bg-sage/15 px-6 py-3 text-sm font-semibold text-foreground">
+                ✓ App già installata
+              </span>
+            ) : (
+              <button
+                type="button"
+                onClick={() => trigger()}
+                className="inline-flex items-center justify-center gap-2 rounded-full bg-primary px-8 py-3.5 text-base font-semibold text-primary-foreground transition-all hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/20"
+              >
+                <span aria-hidden>⬇</span> Installa l'app
+              </button>
+            )}
+            <a
+              href="https://salvapasti.lovable.app"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center gap-2 rounded-full border border-border px-8 py-3.5 text-base font-semibold text-foreground transition-all hover:bg-muted"
+            >
+              <span aria-hidden>➜</span> Apri l'app
+            </a>
+          </div>
           <p className="mt-6 text-xs text-muted-foreground">
             Funziona come una vera app: aggiungila alla schermata Home in pochi secondi.
           </p>
@@ -603,6 +619,7 @@ function DownloadApp() {
           <PhoneMockup />
         </AnimatedSection>
       </div>
+      <InstallInstructionsModal open={open} onClose={() => setOpen(false)} platform={platform} />
     </section>
   );
 }
