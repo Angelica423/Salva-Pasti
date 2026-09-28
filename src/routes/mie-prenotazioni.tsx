@@ -218,6 +218,15 @@ function MieePrenotazioni() {
           Tutti i box che hai prenotato, con lo stato e le informazioni per il ritiro.
         </p>
 
+        <div className="mt-6 rounded-xl border border-amber-500/40 bg-amber-500/10 px-5 py-4 text-sm text-foreground">
+          <strong>Avviso allergie:</strong> le box possono contenere allergeni
+          (glutine, frutta a guscio, latte, uova, pesce, soia…) non sempre
+          indicati. Se sai di avere allergie o intolleranze alimentari, non
+          recarti a ritirare la box.
+        </div>
+
+
+
         {!reg ? (
           <div className="mt-12 rounded-2xl border border-border bg-card p-8 text-center">
             <p className="text-muted-foreground">
