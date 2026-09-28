@@ -440,6 +440,14 @@ export function LiveMap() {
                     )}
                   </dl>
 
+                  <div className="mt-5 rounded-lg border border-amber-500/40 bg-amber-500/10 px-4 py-3 text-sm text-foreground">
+                    <strong>Avviso allergie:</strong> il contenuto delle box può
+                    variare e contenere allergeni non segnalati. Se sai di avere
+                    allergie o intolleranze alimentari, non ritirare la box.
+                  </div>
+
+
+
 
                   {selected.status !== "available" ? (
                     <div className="mt-6 rounded-lg bg-muted px-4 py-3 text-sm text-muted-foreground">
